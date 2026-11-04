@@ -145,11 +145,12 @@ token, and this app intentionally does not embed credentials.
 
 ## Notes and limitations
 
-- The sample playlist contains public **test streams** (Big Buck Bunny, BipBop,
-  Tears of Steel, Angel One), not TV channels. Replace them with streams you
-  are allowed to watch.
 - HLS (`.m3u8`) is the primary target. Media3 also plays progressive MP4/WebM;
   raw MPEG-TS and RTMP streams are not supported by this build.
+- DASH entries (`.mpd`, including the `#KODIPROP` blocks used for the Mediacorp
+  channels) are not supported and will fail to play.
+- `#EXTVLCOPT` user-agent/referrer values and `|Referer=` suffixes are ignored,
+  so channels that require those headers may fail.
 - No EPG, favorites, resume position or picture-in-picture yet.
 - Always opens the first channel on a cold launch, by design, using the playlist
   URL compiled into the app.
@@ -162,5 +163,4 @@ token, and this app intentionally does not embed credentials.
 
 This project ships **no channels**. The playlist you load is your
 responsibility: make sure you have the rights to watch and redistribute those
-streams. The sample entries are public demo streams published by Mux, Apple,
-Unified Streaming and Google's Shaka project.
+streams.
