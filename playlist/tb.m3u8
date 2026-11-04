@@ -1,15 +1,6 @@
 #EXTM3U x-tvg-url="https://cutt.ly/FreemediaMY-EPG-1,https://cutt.ly/FreemediaMY-EPG-2" refresh="24"
 
 #EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-STREAM-INF:BANDWIDTH=4096000,RESOLUTION=1920x1080
-chunklist_b4096000_slENG.m3u8?id=2
-#EXT-X-STREAM-INF:BANDWIDTH=2196000,RESOLUTION=1280x720
-chunklist_b2196000_sleng.m3u8?id=2
-#EXT-X-STREAM-INF:BANDWIDTH=1120000,RESOLUTION=854x480
-chunklist_b1120000_sleng.m3u8?id=2
-#EXT-X-STREAM-INF:BANDWIDTH=608000,RESOLUTION=600x360
-chunklist_b608000_sleng.m3u8?id=2
 
 #EXTINF:-1 tvg-chno="101" tvg-id="TV1" tvg-name="TV1" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM1.png",RTM 1
 #EXTGRP:Family/Kids
