@@ -17,7 +17,9 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
 #EXTINF:-1 tvg-chno="104" tvg-id="Sukan+" tvg-name="Sukan+" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Sukan_RTM.png",Sukan+
 #EXTGRP:Sports
 #EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/live/media0/tv1/HLS/tv1.m3u8?id=1
+#KODIPROP:inputstream.adaptive.license_type=widevine
+#KODIPROP:inputstream.adaptive.license_key=https://71f2efe7.drm-widevine-licensing.axprod.net/AcquireLicense
+https://d25tgymtnqzu8s.cloudfront.net/live/media0/sukan/HLS/sukan.m3u8?id=4
 #EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
