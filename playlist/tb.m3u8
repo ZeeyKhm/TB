@@ -1,10 +1,27 @@
 #EXTM3U x-tvg-url="https://cutt.ly/FreemediaMY-EPG-1,https://cutt.ly/FreemediaMY-EPG-2" refresh="24"
 
 #EXTM3U
-#EXTINF:-1, RTB Live Stream 1080p
-#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+
+#EXTINF:-1, RTB Live Stream (1080p)
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36
-https://d1211whpimeups.cloudfront.net/smil:rtb1/chunklist_b4096000_slENG.m3u8?id=2
+https://cloudfront.net
+
+#EXTINF:-1, RTB Live Stream (720p)
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36
+https://cloudfront.net
+
+#EXTINF:-1, RTB Live Stream (480p)
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36
+https://cloudfront.net
+
+#EXTINF:-1, RTB Live Stream (360p)
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36
+https://cloudfront.net
+
 
 #EXTINF:-1 tvg-chno="101" tvg-id="TV1" tvg-name="TV1" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM1.png",RTM 1
 #EXTGRP:Family/Kids
