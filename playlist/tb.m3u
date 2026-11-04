@@ -1,14 +1,4 @@
 #EXTM3U
-# TB playlist — edit this file on GitHub, then pull-to-refresh in the app.
-# Each channel is an #EXTINF line followed by the stream URL.
-# The first channel is what opens when the app starts.
-#
-#EXTINF:-1 tvg-id="TV1" group-title="Test",Mux — Big Buck Bunny
-https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/index.m3u8?id=1
 
-#EXTINF:-1 tvg-id="apple-bipbop" group-title="Test",Apple — BipBop
-https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8
-#EXTINF:-1 tvg-id="unified-tos" group-title="Test",Unified Streaming — Tears of Steel
-https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
-#EXTINF:-1 tvg-id="shaka-angel" group-title="Test",Shaka — Angel One
-https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8
+#EXTINF:-1 tvg-id="TV1" group-title="Test",TV1
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/index.m3u8?id=1
