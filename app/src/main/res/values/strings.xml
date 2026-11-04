@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TB</string>
+
+    <string name="loading_playlist">Loading playlist…</string>
+    <string name="channels">Channels</string>
+    <string name="channel_count">%1$d channels</string>
+    <string name="search_channels">Search channels</string>
+    <string name="no_matches">No channels match “%1$s”</string>
+    <string name="now_playing">Now playing</string>
+    <string name="live">LIVE</string>
+    <string name="offline_copy">Offline copy</string>
+
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="refresh">Refresh playlist</string>
+    <string name="playlist_source">Playlist source</string>
+    <string name="close">Close</string>
+
+    <string name="couldnt_load">Couldn’t load the playlist</string>
+    <string name="try_again">Try again</string>
+    <string name="change_url">Change playlist URL</string>
+
+    <string name="cant_play">Can’t play this channel</string>
+    <string name="retry">Retry</string>
+    <string name="next_channel">Next channel</string>
+    <string name="source">Source</string>
+
+    <string name="source_title">Playlist source</string>
+    <string name="source_help">Paste the raw GitHub URL of your .m3u / .m3u8 file, for example https://raw.githubusercontent.com/user/repo/main/playlist/tb.m3u</string>
+    <string name="source_label">Playlist URL</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset_default">Reset to default</string>
+    <string name="url_required">Enter a playlist URL.</string>
+    <string name="url_invalid">The URL must start with http:// or https://</string>
+</resources>
