@@ -14,10 +14,10 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/index.m3u8?id=2
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
-#EXTINF:-1 tvg-chno="104" tvg-id="Sukan RTM" tvg-name="Sukan RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Sukan_RTM.png",Sukan RTM
+#EXTINF:-1 tvg-chno="104" tvg-id="Sukan+" tvg-name="Sukan+" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Sukan_RTM.png",Sukan+
 #EXTGRP:Sports
 #EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/smil:sukan/index.m3u8?id=4
+https://d25tgymtnqzu8s.cloudfront.net/live/media0/tv1/HLS/tv1.m3u8?id=1
 #EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
