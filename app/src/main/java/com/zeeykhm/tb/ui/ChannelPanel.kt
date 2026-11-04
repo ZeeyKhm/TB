@@ -63,6 +63,7 @@ fun ChannelPanel(
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
     onEditSource: () -> Unit,
+    landscape: Boolean = false,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val listState = rememberLazyListState()
@@ -85,27 +86,42 @@ fun ChannelPanel(
 
     Surface(
         color = TbSurface,
-        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+        shape = if (landscape) {
+            RoundedCornerShape(topEnd = 28.dp, bottomEnd = 28.dp)
+        } else {
+            RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+        },
         shadowElevation = 24.dp,
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.76f)
+            .then(
+                if (landscape) {
+                    Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.38f)
+                } else {
+                    Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.76f)
+                },
+            )
             .pointerInput(Unit) { detectTapGestures { } },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp)
-                    .size(width = 42.dp, height = 4.dp)
-                    .background(Color.White.copy(alpha = 0.16f), RoundedCornerShape(2.dp)),
-            )
+            if (!landscape) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 10.dp)
+                        .size(width = 42.dp, height = 4.dp)
+                        .background(Color.White.copy(alpha = 0.16f), RoundedCornerShape(2.dp)),
+                )
+            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 2.dp),
+                    .padding(start = 20.dp, end = 8.dp, top = if (landscape) 16.dp else 8.dp, bottom = 2.dp),
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {

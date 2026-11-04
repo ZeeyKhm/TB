@@ -3,8 +3,8 @@
 A small Android player for an M3U/M3U8 playlist hosted on GitHub.
 
 Open the app and it starts playing the **first channel** in the playlist. Tap
-anywhere on the video and the **channel list** slides up. Pick another channel
-and it starts immediately.
+anywhere on the video and the **channel list** slides in from the left. Pick
+another channel and it starts immediately.
 
 Built with Kotlin, Jetpack Compose and AndroidX Media3 (ExoPlayer). The playlist
 is fetched from a raw GitHub URL on every launch, so updating the channel list
@@ -17,10 +17,12 @@ is just a GitHub commit — no app update required.
 ## What it does
 
 - **Launches straight into playback** — no home screen, no "press play".
-- **Tap the video** to toggle the channel list.
+- **Tap the video** to toggle the channel list (a side panel in landscape).
 - **Search** the list by channel name or group.
 - **Refresh** re-downloads the playlist without restarting the app.
-- **Source** lets you paste a different raw URL (saved on the device).
+- **Locked to landscape** — the player never rotates into portrait.
+- **Source** lets you paste a different raw URL for the current session. A cold
+  launch always returns to the playlist URL compiled into the app.
 - Keeps the last good playlist on disk, so the app still works if GitHub is
   temporarily unreachable (shows an "Offline copy" badge).
 - Remembers playback across rotation and pauses when the app goes to the
@@ -103,8 +105,9 @@ gradlew.bat testDebugUnitTest
 gradlew.bat assembleDebug -PplaylistUrl=https://example.com/my-list.m3u
 ```
 
-This only changes the compiled-in default; a URL saved in the app's Source
-dialog still wins.
+This only changes the compiled-in default. A URL entered in the app's Source
+dialog lasts until the app is closed; the next launch starts from the compiled-in
+URL again.
 
 ## Install on a phone
 
@@ -144,7 +147,10 @@ token, and this app intentionally does not embed credentials.
 - HLS (`.m3u8`) is the primary target. Media3 also plays progressive MP4/WebM;
   raw MPEG-TS and RTMP streams are not supported by this build.
 - No EPG, favorites, resume position or picture-in-picture yet.
-- Always opens the first channel on a cold launch, by design.
+- Always opens the first channel on a cold launch, by design, using the playlist
+  URL compiled into the app.
+- The activity is locked to landscape (`sensorLandscape`), so it flips between
+  the two landscape sides but never shows portrait.
 - The debug APK is signed with Android's debug key. For a Play Store release,
   add your own signing config and run `assembleRelease`.
 

@@ -47,7 +47,7 @@ data class TbUiState(
 class TbViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = PlaylistRepository(application)
-    private val settings = SettingsStore(application)
+    private val settings = SettingsStore()
 
     private val _state = MutableStateFlow(
         TbUiState(sourceUrl = settings.playlistUrl),

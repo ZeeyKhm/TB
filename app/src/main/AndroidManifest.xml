@@ -19,6 +19,7 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize|uiMode"
             android:exported="true"
             android:launchMode="singleTop"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/Theme.TB">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

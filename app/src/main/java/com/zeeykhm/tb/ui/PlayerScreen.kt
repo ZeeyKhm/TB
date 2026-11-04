@@ -5,13 +5,16 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -80,11 +83,13 @@ fun PlayerScreen(
         }
     }
 
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black),
     ) {
+        val landscape = maxWidth > maxHeight
+
         AndroidView(
             factory = { context ->
                 PlayerView(context).apply {
@@ -182,9 +187,19 @@ fun PlayerScreen(
 
         AnimatedVisibility(
             visible = panelOpen,
-            enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-            modifier = Modifier.align(Alignment.BottomCenter),
+            enter = if (landscape) {
+                slideInHorizontally(initialOffsetX = { -it }) + fadeIn()
+            } else {
+                slideInVertically(initialOffsetY = { it }) + fadeIn()
+            },
+            exit = if (landscape) {
+                slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+            } else {
+                slideOutVertically(targetOffsetY = { it }) + fadeOut()
+            },
+            modifier = Modifier.align(
+                if (landscape) Alignment.CenterStart else Alignment.BottomCenter,
+            ),
         ) {
             ChannelPanel(
                 state = state,
@@ -196,6 +211,7 @@ fun PlayerScreen(
                 onRefresh = onRefresh,
                 onTogglePlayPause = onTogglePlayPause,
                 onEditSource = onEditSource,
+                landscape = landscape,
             )
         }
     }

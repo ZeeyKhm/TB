@@ -1,36 +1,22 @@
 package com.zeeykhm.tb.data
 
-import android.content.Context
 import com.zeeykhm.tb.BuildConfig
 
-class SettingsStore(context: Context) {
+/**
+ * Holds the playlist URL for the current session only.
+ *
+ * Every cold start begins at [BuildConfig.PLAYLIST_URL], so opening the app
+ * always goes straight to the channels in the GitHub playlist with no setup.
+ * The source dialog can still point at another list until the app is closed.
+ */
+class SettingsStore {
 
-    private val prefs = context.applicationContext
-        .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-    /**
-     * The playlist URL the app should use. Falls back to the URL compiled into
-     * the build, so a fresh install works without any setup.
-     */
-    var playlistUrl: String
-        get() = prefs.getString(KEY_PLAYLIST_URL, null)
-            ?.takeIf { it.isNotBlank() }
-            ?: BuildConfig.PLAYLIST_URL
+    var playlistUrl: String = BuildConfig.PLAYLIST_URL
         set(value) {
-            val trimmed = value.trim()
-            if (trimmed == BuildConfig.PLAYLIST_URL) {
-                prefs.edit().remove(KEY_PLAYLIST_URL).apply()
-            } else {
-                prefs.edit().putString(KEY_PLAYLIST_URL, trimmed).apply()
-            }
+            field = value.trim().ifBlank { BuildConfig.PLAYLIST_URL }
         }
 
     fun resetSource() {
-        prefs.edit().remove(KEY_PLAYLIST_URL).apply()
-    }
-
-    private companion object {
-        const val PREFS_NAME = "tb_settings"
-        const val KEY_PLAYLIST_URL = "playlist_url"
+        playlistUrl = BuildConfig.PLAYLIST_URL
     }
 }
