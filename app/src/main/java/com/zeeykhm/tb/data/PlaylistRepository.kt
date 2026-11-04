@@ -22,7 +22,7 @@ data class PlaylistResult(
 class PlaylistRepository(context: Context) {
 
     private val appContext = context.applicationContext
-    private val cacheFile = File(appContext.filesDir, "last_playlist.m3u")
+    private val cacheFile = File(appContext.filesDir, "last_playlist.m3u8")
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
@@ -35,32 +35,18 @@ class PlaylistRepository(context: Context) {
     suspend fun load(url: String, forceRefresh: Boolean): PlaylistResult =
         withContext(Dispatchers.IO) {
             try {
-                val requestUrl = if (forceRefresh) bypassCdn(url) else url
-                val request = Request.Builder()
-                    .url(requestUrl)
-                    .header("Cache-Control", "no-cache")
-                    .header("User-Agent", "TB/1.0 (Android)")
-                    .build()
-
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        throw IOException("HTTP ${response.code}")
-                    }
-
-                    val body = response.body?.string()
-                        ?: throw IOException("The playlist URL returned an empty response.")
-                    if (!looksLikePlaylist(body)) {
-                        throw IOException("That URL doesn't look like an M3U playlist.")
-                    }
-
-                    val channels = parse(body, response.request.url.toString())
-                    if (channels.isEmpty()) {
-                        throw IOException("This playlist has no channels.")
-                    }
-
-                    runCatching { cacheFile.writeText(body) }
-                    PlaylistResult(channels, offline = false)
+                val (body, finalUrl) = download(url, forceRefresh)
+                if (!looksLikePlaylist(body)) {
+                    throw IOException("That URL doesn't look like an M3U playlist.")
                 }
+
+                val channels = parse(body, finalUrl)
+                if (channels.isEmpty()) {
+                    throw IOException("This playlist has no channels.")
+                }
+
+                runCatching { cacheFile.writeText(body) }
+                PlaylistResult(channels, offline = false)
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {
@@ -72,6 +58,53 @@ class PlaylistRepository(context: Context) {
                 }
             }
         }
+
+    /**
+     * Downloads [url]. If a `.m3u8` playlist is not there yet (404), retries the
+     * same name with the older `.m3u` extension so renaming the file on GitHub
+     * does not break existing installs.
+     */
+    private fun download(url: String, forceRefresh: Boolean): Pair<String, String> =
+        try {
+            downloadOnce(url, forceRefresh)
+        } catch (error: HttpStatusException) {
+            val fallback = legacyExtensionUrl(url)
+            if (error.code == 404 && fallback != null) {
+                downloadOnce(fallback, forceRefresh)
+            } else {
+                throw error
+            }
+        }
+
+    private fun downloadOnce(url: String, forceRefresh: Boolean): Pair<String, String> {
+        val requestUrl = if (forceRefresh) bypassCdn(url) else url
+        val request = Request.Builder()
+            .url(requestUrl)
+            .header("Cache-Control", "no-cache")
+            .header("User-Agent", "TB/1.0 (Android)")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw HttpStatusException(response.code)
+            }
+
+            val body = response.body?.string()
+                ?: throw IOException("The playlist URL returned an empty response.")
+            return body to response.request.url.toString()
+        }
+    }
+
+    /** `…/tb.m3u8?x=1` -> `…/tb.m3u?x=1`; null for any other URL. */
+    private fun legacyExtensionUrl(url: String): String? {
+        val pathEnd = url.indexOfFirst { it == '?' || it == '#' }
+            .let { if (it < 0) url.length else it }
+        val path = url.substring(0, pathEnd)
+        if (!path.endsWith(".m3u8", ignoreCase = true)) return null
+        return path.dropLast(1) + url.substring(pathEnd)
+    }
+
+    private class HttpStatusException(val code: Int) : IOException("HTTP $code")
 
     private fun parse(text: String, baseUrl: String): List<Channel> =
         PlaylistResolver.resolve(M3uParser.parse(text), baseUrl)

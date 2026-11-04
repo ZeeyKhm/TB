@@ -5,9 +5,9 @@ plugins {
 }
 
 // Default playlist. Override for a local test with:
-//   gradlew.bat assembleDebug -PplaylistUrl=http://10.0.2.2:8765/tb.m3u
+//   gradlew.bat assembleDebug -PplaylistUrl=http://10.0.2.2:8765/tb.m3u8
 val playlistUrl = providers.gradleProperty("playlistUrl")
-    .getOrElse("https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u")
+    .getOrElse("https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u8")
 
 android {
     namespace = "com.zeeykhm.tb"

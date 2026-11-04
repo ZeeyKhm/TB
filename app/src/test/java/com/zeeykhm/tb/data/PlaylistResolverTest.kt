@@ -15,7 +15,7 @@ class PlaylistResolverTest {
 
         val resolved = PlaylistResolver.resolve(
             channels,
-            "https://example.com/lists/tb.m3u",
+            "https://example.com/lists/tb.m3u8",
         )
 
         assertEquals("https://example.com/lists/streams/one.m3u8", resolved[0].url)

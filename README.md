@@ -34,7 +34,7 @@ is just a GitHub commit — no app update required.
 ```
 TB/
 ├── app/                     Android app (Kotlin + Compose + Media3)
-├── playlist/tb.m3u          ← the playlist people edit on GitHub
+├── playlist/tb.m3u8         ← the playlist people edit on GitHub
 ├── .github/workflows/       builds a debug APK on every push
 └── README.md
 ```
@@ -42,15 +42,19 @@ TB/
 The app's default playlist URL is:
 
 ```
-https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u
+https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u8
 ```
 
 It is defined once in `app/build.gradle.kts` (`playlistUrl`). Change it there if
 you rename the repo or move the file.
 
+> If the `.m3u8` file is missing (for example during the rename from `.m3u`), the
+> app automatically retries the same URL with the `.m3u` extension, so older
+> copies of the playlist keep working.
+
 ## Update the channel list
 
-1. Open `playlist/tb.m3u` on GitHub and press the pencil (Edit) button.
+1. Open `playlist/tb.m3u8` on GitHub and press the pencil (Edit) button.
 2. Add or edit entries:
 
    ```m3u
@@ -102,7 +106,7 @@ gradlew.bat testDebugUnitTest
 ### Point a test build at another playlist
 
 ```bat
-gradlew.bat assembleDebug -PplaylistUrl=https://example.com/my-list.m3u
+gradlew.bat assembleDebug -PplaylistUrl=https://example.com/my-list.m3u8
 ```
 
 This only changes the compiled-in default. A URL entered in the app's Source
@@ -133,7 +137,7 @@ file manager).
    ```
 
 3. Open the raw URL in a browser to confirm it returns the playlist:
-   `https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u`
+   `https://raw.githubusercontent.com/ZeeyKhm/TB/main/playlist/tb.m3u8`
 4. Install the APK. It will start with the first channel in that file.
 
 The repository must be **public**. Raw GitHub URLs for private repos need a

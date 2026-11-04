@@ -27,7 +27,7 @@
     <string name="source">Source</string>
 
     <string name="source_title">Playlist source</string>
-    <string name="source_help">Paste the raw GitHub URL of your .m3u / .m3u8 file, for example https://raw.githubusercontent.com/user/repo/main/playlist/tb.m3u</string>
+    <string name="source_help">Paste the raw GitHub URL of your .m3u8 file, for example https://raw.githubusercontent.com/user/repo/main/playlist/tb.m3u8</string>
     <string name="source_label">Playlist URL</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
