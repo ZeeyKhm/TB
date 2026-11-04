@@ -26,6 +26,7 @@ object M3uParser {
 
     fun parse(text: String): List<Channel> {
         val channels = LinkedHashMap<String, Channel>()
+        val usesExtInf = text.contains("#EXTINF", ignoreCase = true)
 
         var attributes: Map<String, String> = emptyMap()
         var pendingName: String? = null
@@ -53,6 +54,12 @@ object M3uParser {
                 line.startsWith("#") -> Unit
 
                 else -> {
+                    // Kodi-style lists sometimes put extra/alternate URLs after
+                    // a channel (e.g. a second URL or a DASH manifest following
+                    // #KODIPROP). Those have no #EXTINF of their own, so skip
+                    // them instead of showing a duplicate hostname channel.
+                    if (usesExtInf && pendingName == null) continue
+
                     val name = pendingName?.ifBlank { null }
                         ?: attributes["tvg-name"]?.ifBlank { null }
                         ?: deriveName(line)

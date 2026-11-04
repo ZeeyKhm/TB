@@ -133,6 +133,23 @@ class M3uParserTest {
     }
 
     @Test
+    fun `ignores extra urls that have no extinf of their own`() {
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1,Channel One
+            https://example.com/one.m3u8
+            #EXTINF:-1,Channel Two
+            https://example.com/two.m3u8
+            https://example.com/two-backup.m3u8
+            #KODIPROP:inputstream.adaptive.manifest_type=dash
+            https://example.com/two/manifest.mpd
+        """.trimIndent()
+
+        val channels = M3uParser.parse(playlist)
+        assertEquals(listOf("Channel One", "Channel Two"), channels.map { it.name })
+    }
+
+    @Test
     fun `keeps only the first occurrence of a duplicated url`() {
         val playlist = """
             #EXTINF:-1,First
