@@ -14,27 +14,10 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/index.m3u8?id=2
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
-#EXTINF:-1 tvg-chno="104" tvg-id="Sukan+" tvg-name="Sukan+" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Sukan_RTM.png",Sukan+
-#EXTGRP:Sports
-#EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/live/media0/tv1/HLS/tv1.m3u8?id=1
 #EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
-#EXTINF:-1 tvg-chno="106" tvg-id="TV6" tvg-name="TV6" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM6.png",RTM 6
-#EXTGRP:Family/Kids
-#EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/smil:tv6/index.m3u8?id=6
-#EXTINF:-1 tvg-chno="107" tvg-id="Dewan Rakyat" tvg-name="Dewan Rakyat" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTMP_DewanRakyat.png",RTM Parlimen Dewan Rakyat
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/smil:rakyat/index.m3u8?id=7
-#EXTINF:-1 tvg-chno="108" tvg-id="Dewan Negara" tvg-name="Dewan Negara" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTMP_DewanNegara.png",RTM Parlimen Dewan Negara
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/smil:negara/index.m3u8?id=8
-
 #EXTINF:-1 tvg-chno="113" tvg-id="TV3" tvg-name="TV3" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_3.png",Media Prima TV3
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
