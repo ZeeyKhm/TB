@@ -17,9 +17,11 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
 #EXTINF:-1 tvg-chno="104" tvg-id="Sukan+" tvg-name="Sukan+" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Sukan_RTM.png",Sukan+
 #EXTGRP:Sports
 #EXTVLCOPT:network-caching=1000
-#KODIPROP:inputstream.adaptive.license_type=widevine
-#KODIPROP:inputstream.adaptive.license_key=https://71f2efe7.drm-widevine-licensing.axprod.net/AcquireLicense
-https://d25tgymtnqzu8s.cloudfront.net/live/media0/sukan/HLS/sukan.m3u8?id=4
+#EXTVLCOPT:http-referrer=https://rtmklik.rtm.gov.my
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
+#KODIPROP:inputstream.adaptive.license_key=https://71f2efe7.drm-widevine-licensing.axprod.net/AcquireLicense|Content-Type=application/octet-stream|R{SSM}
+https://d25tgymtnqzu8s.cloudfront.net/smil:sukan/playlist.m3u8?id=4|Referer=https://rtmklik.rtm.gov.my&User-Agent=Mozilla/5.0
 #EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
