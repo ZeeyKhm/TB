@@ -14,4 +14,6 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/playlist.m3u8?id=1|Referer=https:
 #EXTINF:-1 tvg-chno="1001" tvg-id="RTBAneka.bn" tvg-name="RTBAneka" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Aneka.png" group-title="PLUS: SEA's FTA Channels",RTB Aneka 🇧🇳
 #EXTGRP:[*] PLUS: SEA's FTA Channels
 #EXTVLCOPT:network-caching=1000
-https://d1211whpimeups.cloudfront.net/smil:rtb2/playlist.m3u8
+#EXTVLCOPT:http-referrer=https://www.rtbklik.bn/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://d1211whpimeups.cloudfront.net/smil:rtb2/playlist.m3u8|Referer=https://www.rtbklik.bn/&User-Agent=Mozilla/5.0
