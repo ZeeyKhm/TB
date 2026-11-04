@@ -2,10 +2,6 @@
 
 #################### FTA ####################
 
-#EXTINF:-1 tvg-chno="1001" tvg-id="RTBAneka.bn" tvg-name="RTBAneka" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Aneka.png",RTB Aneka 🇧🇳
-#EXTGRP:[*] PLUS: SEA's FTA Channels
-#EXTVLCOPT:network-caching=1000
-https://d1211whpimeups.cloudfront.net/smil:rtb2/playlist.m3u8
 #EXTINF:-1 tvg-chno="1002" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera 🇧🇳
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
