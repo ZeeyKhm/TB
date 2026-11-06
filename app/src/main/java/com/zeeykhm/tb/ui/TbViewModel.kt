@@ -9,10 +9,21 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
+import androidx.media3.exoplayer.drm.DrmSessionManager
+import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
+import androidx.media3.exoplayer.drm.FrameworkMediaDrm
+import androidx.media3.exoplayer.drm.LocalMediaDrmCallback
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import com.zeeykhm.tb.data.Channel
+import com.zeeykhm.tb.data.DrmInfo
+import com.zeeykhm.tb.data.DrmScheme
 import com.zeeykhm.tb.data.PlaylistRepository
 import com.zeeykhm.tb.data.SettingsStore
+import org.json.JSONObject
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -66,6 +77,9 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         .build()
 
     private var loadJob: Job? = null
+
+    /** ClearKey licences are local, so they need a hand-built DRM session manager. */
+    private val drmManagers = mutableMapOf<DrmInfo, DrmSessionManager>()
 
     init {
         player.addListener(object : Player.Listener {
@@ -134,21 +148,109 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
 
-        val mediaItem = MediaItem.Builder()
-            .setUri(channel.url)
-            .apply {
-                if (channel.url.contains(".m3u8", ignoreCase = true) ||
-                    channel.url.contains(".m3u", ignoreCase = true)
-                ) {
-                    setMimeType(MimeTypes.APPLICATION_M3U8)
-                }
-            }
-            .build()
+        val mediaItem = buildMediaItem(channel)
+        val factory = createMediaSourceFactory(channel)
 
-        player.setMediaItem(mediaItem)
+        val clearKey = channel.drm?.takeIf { it.scheme == DrmScheme.CLEARKEY }
+        if (clearKey != null) {
+            val manager = drmManagers.getOrPut(clearKey) { createClearKeyManager(clearKey) }
+            factory.setDrmSessionManagerProvider(DrmSessionManagerProvider { manager })
+        }
+
+        player.setMediaSource(factory.createMediaSource(mediaItem))
         player.prepare()
         player.playWhenReady = true
     }
+
+    /**
+     * Per-channel HTTP headers: some CDNs reject the default player agent or
+     * require a Referer, so `#EXTVLCOPT` values are applied to every request
+     * for that channel (manifest and segments alike).
+     */
+    private fun createMediaSourceFactory(channel: Channel): DefaultMediaSourceFactory {
+        val httpFactory = DefaultHttpDataSource.Factory()
+
+        channel.httpHeaders["User-Agent"]
+            ?.takeIf { it.isNotBlank() }
+            ?.let { httpFactory.setUserAgent(it) }
+
+        val requestHeaders = channel.httpHeaders
+            .filterKeys { !it.equals("User-Agent", ignoreCase = true) }
+        if (requestHeaders.isNotEmpty()) {
+            httpFactory.setDefaultRequestProperties(requestHeaders)
+        }
+
+        return DefaultMediaSourceFactory(
+            DefaultDataSource.Factory(getApplication<Application>(), httpFactory),
+        )
+    }
+
+    /**
+     * Widevine is handled by Media3's default DRM provider through the media
+     * item's [MediaItem.DrmConfiguration]; the playlist supplies the licence URL.
+     */
+    private fun buildMediaItem(channel: Channel): MediaItem {
+        val builder = MediaItem.Builder().setUri(channel.url)
+
+        mimeTypeFor(channel)?.let { mime -> builder.setMimeType(mime) }
+
+        channel.drm?.takeIf { it.scheme == DrmScheme.WIDEVINE }?.let { drm ->
+            val configuration = MediaItem.DrmConfiguration.Builder(C.WIDEVINE_UUID)
+                .apply {
+                    drm.licenseUrl?.takeIf { it.isNotBlank() }?.let { url ->
+                        setLicenseUri(url)
+                    }
+                    if (drm.licenseHeaders.isNotEmpty()) {
+                        setLicenseRequestHeaders(drm.licenseHeaders)
+                    }
+                }
+                .build()
+            builder.setDrmConfiguration(configuration)
+        }
+
+        return builder.build()
+    }
+
+    private fun mimeTypeFor(channel: Channel): String? {
+        val declared = channel.manifestType?.lowercase()
+        return when {
+            declared == "dash" || declared == "mpd" -> MimeTypes.APPLICATION_MPD
+            declared == "hls" || declared == "m3u8" -> MimeTypes.APPLICATION_M3U8
+            channel.url.contains(".mpd", ignoreCase = true) -> MimeTypes.APPLICATION_MPD
+            channel.url.contains(".m3u8", ignoreCase = true) ||
+                channel.url.contains(".m3u", ignoreCase = true) -> MimeTypes.APPLICATION_M3U8
+            else -> null
+        }
+    }
+
+    private fun createClearKeyManager(drm: DrmInfo): DrmSessionManager {
+        val callback = LocalMediaDrmCallback(clearKeyResponse(drm.clearKeyJson.orEmpty()))
+        return DefaultDrmSessionManager.Builder()
+            .setUuidAndExoMediaDrmProvider(C.CLEARKEY_UUID, FrameworkMediaDrm.DEFAULT_PROVIDER)
+            .build(callback)
+    }
+
+    /** ClearKey requires base64url values, while Kodi playlists often use base64. */
+    private fun clearKeyResponse(json: String): ByteArray =
+        runCatching {
+            val root = JSONObject(json)
+            val keys = root.optJSONArray("keys")
+            if (keys != null) {
+                for (index in 0 until keys.length()) {
+                    val key = keys.optJSONObject(index) ?: continue
+                    for (field in listOf("k", "kid")) {
+                        val value = key.optString(field)
+                        if (value.isNotEmpty()) {
+                            key.put(field, base64Url(value))
+                        }
+                    }
+                }
+            }
+            root.toString().toByteArray(Charsets.UTF_8)
+        }.getOrElse { json.toByteArray(Charsets.UTF_8) }
+
+    private fun base64Url(value: String): String =
+        value.replace('+', '-').replace('/', '_').trimEnd('=')
 
     fun retryPlayback() {
         play(_state.value.currentIndex)
@@ -257,11 +359,27 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
             PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW ->
                 "The live stream fell behind. Retry usually fixes it."
 
+            PlaybackException.ERROR_CODE_DRM_LICENSE_ACQUISITION_FAILED,
+            PlaybackException.ERROR_CODE_DRM_PROVISIONING_FAILED,
+            -> "The channel’s DRM licence couldn’t be loaded."
+
+            PlaybackException.ERROR_CODE_DRM_SCHEME_UNSUPPORTED ->
+                "This device doesn’t support the DRM this channel uses."
+
+            PlaybackException.ERROR_CODE_DRM_LICENSE_EXPIRED ->
+                "The DRM licence for this channel has expired."
+
+            PlaybackException.ERROR_CODE_DRM_DEVICE_REVOKED,
+            PlaybackException.ERROR_CODE_DRM_DISALLOWED_OPERATION,
+            -> "DRM playback is not allowed on this device."
+
             else -> "Playback failed (${error.errorCodeName})."
         }
 
     override fun onCleared() {
         loadJob?.cancel()
+        drmManagers.values.forEach { runCatching { it.release() } }
+        drmManagers.clear()
         player.release()
         super.onCleared()
     }

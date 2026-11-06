@@ -12,6 +12,11 @@ data class Channel(
     val group: String? = null,
     val logoUrl: String? = null,
     val tvgId: String? = null,
+    /** `dash`, `hls`, … from `#KODIPROP:inputstream.adaptive.manifest_type`. */
+    val manifestType: String? = null,
+    val drm: DrmInfo? = null,
+    /** Extra HTTP headers from `#EXTVLCOPT` or a `|Header=value` URL suffix. */
+    val httpHeaders: Map<String, String> = emptyMap(),
 ) {
     val key: String get() = url
 }

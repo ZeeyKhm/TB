@@ -104,19 +104,39 @@ class M3uParserTest {
     }
 
     @Test
-    fun `ignores blank lines comments and vlcl opt lines`() {
+    fun `reads user agent and referrer from extvlcopt`() {
         val playlist = """
             #EXTM3U
 
             #EXTVLCOPT:network-caching=3000
             #EXTINF:-1,One
-            #EXTVLCOPT:http-user-agent=Custom
+            #EXTVLCOPT:http-user-agent=Mozilla/5.0
+            #EXTVLCOPT:http-referrer=https://ref.example/
             https://example.com/one
+            #EXTINF:-1,Two
+            https://example.com/two
+        """.trimIndent()
+
+        val channels = M3uParser.parse(playlist)
+        assertEquals("One", channels[0].name)
+        assertEquals("https://example.com/one", channels[0].url)
+        assertEquals("Mozilla/5.0", channels[0].httpHeaders["User-Agent"])
+        assertEquals("https://ref.example/", channels[0].httpHeaders["Referer"])
+        assertTrue(channels[1].httpHeaders.isEmpty())
+    }
+
+    @Test
+    fun `strips url header suffix into http headers`() {
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1,One
+            https://example.com/live.m3u8|Referer=https://ref.example/&User-Agent=Custom
         """.trimIndent()
 
         val channel = M3uParser.parse(playlist).single()
-        assertEquals("One", channel.name)
-        assertEquals("https://example.com/one", channel.url)
+        assertEquals("https://example.com/live.m3u8", channel.url)
+        assertEquals("https://ref.example/", channel.httpHeaders["Referer"])
+        assertEquals("Custom", channel.httpHeaders["User-Agent"])
     }
 
     @Test
@@ -130,6 +150,57 @@ class M3uParserTest {
         assertEquals(2, channels.size)
         assertEquals("example.com", channels[0].name)
         assertEquals("https://example.com/b.m3u8", channels[1].url)
+    }
+
+    @Test
+    fun `reads widevine license details from kodiprop`() {
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1,DASH Channel
+            #KODIPROP:inputstream.adaptive.manifest_type=dash
+            #KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
+            #KODIPROP:inputstream.adaptive.license_key=https://license.example/wv|User-Agent=TB&X-Token=abc
+            https://example.com/stream/manifest.mpd
+        """.trimIndent()
+
+        val channel = M3uParser.parse(playlist).single()
+        assertEquals("dash", channel.manifestType)
+        assertEquals(DrmScheme.WIDEVINE, channel.drm?.scheme)
+        assertEquals("https://license.example/wv", channel.drm?.licenseUrl)
+        assertEquals(
+            mapOf("User-Agent" to "TB", "X-Token" to "abc"),
+            channel.drm?.licenseHeaders,
+        )
+    }
+
+    @Test
+    fun `reads clearkey license from kodiprop`() {
+        val keys = """{"keys":[{"kty":"oct","k":"abc+/=","kid":"def+/="}],"type":"temporary"}"""
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1,ClearKey Channel
+            #KODIPROP:inputstream.adaptive.manifest_type=dash
+            #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+            #KODIPROP:inputstream.adaptive.license_key=$keys
+            https://example.com/stream/manifest.mpd
+        """.trimIndent()
+
+        val channel = M3uParser.parse(playlist).single()
+        assertEquals(DrmScheme.CLEARKEY, channel.drm?.scheme)
+        assertEquals(keys, channel.drm?.clearKeyJson)
+    }
+
+    @Test
+    fun `plain channels have no drm`() {
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1,Plain
+            https://example.com/plain.m3u8
+        """.trimIndent()
+
+        val channel = M3uParser.parse(playlist).single()
+        assertNull(channel.drm)
+        assertNull(channel.manifestType)
     }
 
     @Test

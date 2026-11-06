@@ -20,6 +20,8 @@ is just a GitHub commit — no app update required.
 - **Tap the video** to toggle the channel list (a side panel in landscape).
 - **Search** the list by channel name or group.
 - **Refresh** re-downloads the playlist without restarting the app.
+- **HLS and DASH playback**, with **Widevine** licences and **ClearKey** keys
+  read from `#KODIPROP` lines.
 - **Locked to landscape** — the player never rotates into portrait.
 - **Source** lets you paste a different raw URL for the current session. A cold
   launch always returns to the playlist URL compiled into the app.
@@ -145,12 +147,13 @@ token, and this app intentionally does not embed credentials.
 
 ## Notes and limitations
 
-- HLS (`.m3u8`) is the primary target. Media3 also plays progressive MP4/WebM;
-  raw MPEG-TS and RTMP streams are not supported by this build.
-- DASH entries (`.mpd`, including the `#KODIPROP` blocks used for the Mediacorp
-  channels) are not supported and will fail to play.
-- `#EXTVLCOPT` user-agent/referrer values and `|Referer=` suffixes are ignored,
-  so channels that require those headers may fail.
+- HLS (`.m3u8`), DASH (`.mpd`) and progressive MP4/WebM are supported; raw
+  MPEG-TS and RTMP streams are not.
+- Widevine (`com.widevine.alpha`) and ClearKey (`org.w3.clearkey`) DRM are read
+  from `#KODIPROP` lines. Widevine needs a licence server in the playlist and a
+  device that supports Widevine (most Play-certified phones do).
+- `#EXTVLCOPT:http-user-agent` / `http-referrer` values and `|Referer=` /
+  `|User-Agent=` URL suffixes are applied to that channel's requests.
 - No EPG, favorites, resume position or picture-in-picture yet.
 - Always opens the first channel on a cold launch, by design, using the playlist
   URL compiled into the app.
