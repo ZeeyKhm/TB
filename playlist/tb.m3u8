@@ -2,7 +2,13 @@
 
 #################### FTA ####################
 
-#EXTINF:-1 tvg-chno="1002" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera 🇧🇳
+#EXTINF:-1 tvg-chno="101" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
+#EXTGRP:Family/Kids
+#EXTVLCOPT:network-caching=1000
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+https://d2ychbs6cqpbif.cloudfront.net/smil:rtb2/playlist.m3u8?id=3391
+#EXTINF:-1 tvg-chno="102" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
@@ -12,11 +18,11 @@ https://d1211whpimeups.cloudfront.net/smil:rtb1/playlist.m3u8?id=2
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/index.m3u8?id=1
-#EXTINF:-1 tvg-chno="102" tvg-id="TV2" tvg-name="TV2" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM2.png",RTM 2
+#EXTINF:-1 tvg-chno="103" tvg-id="TV2" tvg-name="TV2" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM2.png",RTM 2
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/index.m3u8?id=2
-#EXTINF:-1 tvg-chno="103" tvg-id="Okey" tvg-name="Okey" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM_Okey.png",RTM Okey
+#EXTINF:-1 tvg-chno="104" tvg-id="Okey" tvg-name="Okey" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM_Okey.png",RTM Okey
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
@@ -24,54 +30,54 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
-#EXTINF:-1 tvg-chno="113" tvg-id="TV3" tvg-name="TV3" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_3.png",Media Prima TV3
+#EXTINF:-1 tvg-chno="106" tvg-id="TV3" tvg-name="TV3" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_3.png",Media Prima TV3
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://tonton-live-switch-ssar.akamaized.net/stream-tv3/master.m3u8?bpkio_serviceid=6c0958d82a830a02ca0936d9cfab8311
-#EXTINF:-1 tvg-chno="114" tvg-id="MPBDramaSangat" tvg-name="MPBDramaSangat" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_DS.png",Media Prima DramaSangat
+#EXTINF:-1 tvg-chno="107" tvg-id="MPBDramaSangat" tvg-name="MPBDramaSangat" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_DS.png",Media Prima DramaSangat
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://tonton-live-sg3.akamaized.net/live-hls/tonton10.m3u8
-#EXTINF:-1 tvg-chno="117" tvg-id="DidikTVKPM" tvg-name="DidikTVKPM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_7.png",Media Prima NTV7
+#EXTINF:-1 tvg-chno="108" tvg-id="DidikTVKPM" tvg-name="DidikTVKPM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_7.png",Media Prima NTV7
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://tonton-live-switch-ssar.akamaized.net/stream-ntv7/master.m3u8?bpkio_serviceid=6c0958d82a830a029c72673202bd4846
-#EXTINF:-1 tvg-chno="118" tvg-id="8TV" tvg-name="8TV" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_8.png",Media Prima 8TV
+#EXTINF:-1 tvg-chno="109" tvg-id="8TV" tvg-name="8TV" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_8.png",Media Prima 8TV
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://tonton-live-switch-ssar.akamaized.net/stream-8tv/master.m3u8?bpkio_serviceid=6c0958d82a830a02e2fe99cb3eff9bcf
-#EXTINF:-1 tvg-chno="119" tvg-id="TV9" tvg-name="TV9" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_9.png",Media Prima TV9
+#EXTINF:-1 tvg-chno="110" tvg-id="TV9" tvg-name="TV9" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_9.png",Media Prima TV9
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://tonton-live-switch-ssar.akamaized.net/stream-tv9/master.m3u8?bpkio_serviceid=6c0958d82a830a02c91ce241c1aad7d5
 
-#EXTINF:-1 tvg-chno="120" tvg-id="AwesomeTV.my" tvg-name="AwesomeTV.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/AwesomeTV.png",Awesome TV
+#EXTINF:-1 tvg-chno="111" tvg-id="AwesomeTV.my" tvg-name="AwesomeTV.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/AwesomeTV.png",Awesome TV
 #EXTGRP:Family/Kids
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #EXTVLCOPT:network-caching=1000
 #EXTVLCOPT:http-referrer=https://player.castr.com/
 https://cdnatv.mirack.tv/Atv/index.m3u8
-#EXTINF:-1 tvg-chno="121" tvg-id="BERNAMA.my" tvg-name="BERNAMA.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/BernamaTV.png",BERNAMA
+#EXTINF:-1 tvg-chno="112" tvg-id="BERNAMA.my" tvg-name="BERNAMA.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/BernamaTV.png",BERNAMA
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://live.mana2.my/Bernama/index.m3u8?auth_key=1744107380-248306618cca4be09d545a14b75d6ca5-0-2d1600ae4c50f6f506a6730f9472651e&token=1744107380-248306618cca4be09d545a14b75d6ca5-0-2d1600ae4c50f6f506a6730f9472651e
-#EXTINF:-1 tvg-chno="122" tvg-id="TVAlhijrah.my" tvg-name="TV Alhijrah" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVAlhijrah.png",TV Alhijrah
+#EXTINF:-1 tvg-chno="113" tvg-id="TVAlhijrah.my" tvg-name="TV Alhijrah" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVAlhijrah.png",TV Alhijrah
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://live.mana2.my/TvAlhijrah/index.m3u8?auth_key=1744107131-c8e34d2db33542e69886b799bdb138e1-0-ef58e29c0b17b77f730c0812f244b587&token=1744107131-c8e34d2db33542e69886b799bdb138e1-0-ef58e29c0b17b77f730c0812f244b587
-#EXTINF:-1 tvg-chno="123" tvg-id="TV IKIM" tvg-name="TV IKIM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVIkim.png",TV Ikim
+#EXTINF:-1 tvg-chno="114" tvg-id="TV IKIM" tvg-name="TV IKIM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVIkim.png",TV Ikim
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://edge-sg1.vediostream.com/abr/tvikim/playlist.m3u8
-#EXTINF:-1 tvg-chno="124" tvg-id="TVS.my" tvg-name="TVS.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVS.png",TVS
+#EXTINF:-1 tvg-chno="115" tvg-id="TVS.my" tvg-name="TVS.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVS.png",TVS
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://live-tvs.tvsarawak.my/live/tvs.m3u8
-#EXTINF:-1 tvg-chno="125" tvg-id="TVS.my" tvg-name="TVS.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVS.png",TVS+
+#EXTINF:-1 tvg-chno="116" tvg-id="TVS.my" tvg-name="TVS.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/TVS.png",TVS+
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://stream2.smg.my/live/tvsplus.m3u8
-#EXTINF:-1 tvg-chno="126" tvg-id="SUKETV.my" tvg-name="SUKETV.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/SUKETV.png",SUKE TV
+#EXTINF:-1 tvg-chno="117" tvg-id="SUKETV.my" tvg-name="SUKETV.my" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/SUKETV.png",SUKE TV
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36
