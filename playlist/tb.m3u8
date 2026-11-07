@@ -33,7 +33,7 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
 #EXTINF:-1 group-title="Sports",Sukan RTM
 #KODIPROP:inputstream.adaptive.manifest_type=hls
 #KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
-#KODIPROP:inputstream.adaptive.license_key=https://your-licence-server/widevine
+#KODIPROP:inputstream.adaptive.license_key=https://71f2efe7.drm-widevine-licensing.axprod.net/AcquireLicense|X-AxDRM-Message=<JWT>|R{SSM}|
 https://d25tgymtnqzu8s.cloudfront.net/live/media0/sukan/HLS/sukan.m3u8?id=4
 #EXTINF:-1 tvg-chno="106" tvg-id="TV3" tvg-name="TV3" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_3.png",Media Prima TV3
 #EXTGRP:Family/Kids
