@@ -30,9 +30,8 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
-#EXTINF:-1 tvg-chno="106" tvg-id="TV3" tvg-name="TV3" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_3.png",Media Prima TV3
-#EXTGRP:Family/Kids
-#EXTVLCOPT:network-caching=1000
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://tv3live.my/wp-content/uploads/2026/08/TV3-Live-Logo.webp", TV3 Live
 https://2bfd741e.b-cdn.net/streamer/6enj7a28wshMvNNzXzLrtmMDgVsnVpJC6cZGZf6g5yJt.m3u8?expires=1794206616&token=a0f3XEtMRwuEJ0F8h0tAK9KYIElHuQMV28HiWwiqsIc
 #EXTINF:-1 tvg-chno="107" tvg-id="MPBDramaSangat" tvg-name="MPBDramaSangat" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/MPB_DS.png",Media Prima DramaSangat
 #EXTGRP:Family/Kids
