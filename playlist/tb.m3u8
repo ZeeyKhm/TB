@@ -41,10 +41,6 @@ https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index.m3u
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/index.m3u8|Referer=https://klik.tvri.co.id/
-#EXTINF:-1 tvg-chno="603" tvg-id="NHKWorldJapan" tvg-name="NHKWorldJapan" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/NHKWorldJapan.png",NHK World Japan
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://nhkwlive-ojp.akamaized.net/hls/live/2003459/nhkwlive-ojp-en/index.m3u8
 #EXTINF:-1 tvg-chno="604" tvg-id="CGTN" tvg-name="CGTN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/CGTN.png",CGTN
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
@@ -207,8 +203,3 @@ https://stream.rcs.revma.com/nzgauqq1v7zuv
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
 https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC
-#EXTINF:-1 tvg-chno="928" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/",RTM Radio Muzik (TEST)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://play.radioking.io/muzikfm
-https://listen.radioking.com/radio/663445/stream/727324
