@@ -31,15 +31,6 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
 
-#EXTINF:-1 tvg-chno="504" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/cookingpanda.png",Cooking Panda
-#EXTGRP:International: Varieties
-#EXTVLCOPT:network-caching=1000
-https://stream.ads.ottera.tv/playlist.m3u8?network_id=47
-#EXTINF:-1 tvg-chno="505" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/naturestreamtv.png",NatureStream.tv
-#EXTGRP:International: Varieties
-#EXTVLCOPT:network-caching=1000
-https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/naturestreamtv/master.m3u8
-
 #################### NEWS/WORLD/DOCUMENTARY ####################
 
 #EXTINF:-1 tvg-chno="601" tvg-id="CNA" tvg-name="CNA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/CNA.png",CNA Singapore
