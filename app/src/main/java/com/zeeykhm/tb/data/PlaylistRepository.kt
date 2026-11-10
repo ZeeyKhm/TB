@@ -25,9 +25,10 @@ class PlaylistRepository(context: Context) {
     private val cacheFile = File(appContext.filesDir, "last_playlist.m3u8")
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(25, TimeUnit.SECONDS)
-        .callTimeout(40, TimeUnit.SECONDS)
+        .connectTimeout(8, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .callTimeout(20, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
         .followRedirects(true)
         .followSslRedirects(true)
         .build()
@@ -58,6 +59,13 @@ class PlaylistRepository(context: Context) {
                 }
             }
         }
+
+    /** The last good playlist on disk, for an instant start while the network refreshes. */
+    suspend fun cached(url: String): PlaylistResult? = withContext(Dispatchers.IO) {
+        val body = readCache() ?: return@withContext null
+        val channels = runCatching { parse(body, url) }.getOrNull()
+        if (channels.isNullOrEmpty()) null else PlaylistResult(channels, offline = true)
+    }
 
     /**
      * Downloads [url]. If a `.m3u8` playlist is not there yet (404), retries the

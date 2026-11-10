@@ -41,14 +41,6 @@ https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index.m3u
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/index.m3u8|Referer=https://klik.tvri.co.id/
-#EXTINF:-1 tvg-chno="604" tvg-id="CGTN" tvg-name="CGTN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/CGTN.png",CGTN
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://live.cgtn.com/1000/prog_index.m3u8
-#EXTINF:-1 tvg-chno="605" tvg-id="CGTNDocumentary" tvg-name="CGTNDocumentary" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/cgtn_doc.png",CGTN Documentary
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://livedoc.cgtn.com/1000d/prog_index.m3u8
 #EXTINF:-1 tvg-chno="606" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/ArirangTV.png",Arirang TV
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000

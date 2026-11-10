@@ -26,7 +26,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,15 +48,15 @@ fun PlayerScreen(
     onSelectChannel: (Int) -> Unit,
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
-    onEditSource: () -> Unit,
+    onTogglePanel: () -> Unit,
+    onClosePanel: () -> Unit,
     onRetryPlayback: () -> Unit,
 ) {
-    var panelOpen by rememberSaveable { mutableStateOf(false) }
     var showNameBadge by remember { mutableStateOf(false) }
     var resumeOnStart by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    BackHandler(enabled = panelOpen) { panelOpen = false }
+    BackHandler(enabled = state.panelOpen) { onClosePanel() }
 
     DisposableEffect(lifecycleOwner, player) {
         val observer = LifecycleEventObserver { _, event ->
@@ -110,7 +109,7 @@ fun PlayerScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .pointerInput(Unit) {
-                    detectTapGestures(onTap = { panelOpen = !panelOpen })
+                    detectTapGestures(onTap = { onTogglePanel() })
                 },
         )
 
@@ -131,7 +130,7 @@ fun PlayerScreen(
         }
 
         AnimatedVisibility(
-            visible = showNameBadge && !panelOpen,
+            visible = showNameBadge && !state.panelOpen,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier
@@ -144,7 +143,7 @@ fun PlayerScreen(
             )
         }
 
-        if (state.offline && !panelOpen) {
+        if (state.offline && !state.panelOpen) {
             OfflineBadge(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -161,7 +160,7 @@ fun PlayerScreen(
                         onSelectChannel((state.currentIndex + 1) % state.channels.size)
                     }
                 },
-                onOpenChannels = { panelOpen = true },
+                onOpenChannels = onTogglePanel,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(24.dp),
@@ -169,7 +168,7 @@ fun PlayerScreen(
         }
 
         AnimatedVisibility(
-            visible = panelOpen,
+            visible = state.panelOpen,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier.fillMaxSize(),
@@ -181,12 +180,12 @@ fun PlayerScreen(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                    ) { panelOpen = false },
+                    ) { onClosePanel() },
             )
         }
 
         AnimatedVisibility(
-            visible = panelOpen,
+            visible = state.panelOpen,
             enter = if (landscape) {
                 slideInHorizontally(initialOffsetX = { -it }) + fadeIn()
             } else {
@@ -205,12 +204,11 @@ fun PlayerScreen(
                 state = state,
                 onSelect = { index ->
                     onSelectChannel(index)
-                    panelOpen = false
+                    onClosePanel()
                 },
-                onClose = { panelOpen = false },
+                onClose = onClosePanel,
                 onRefresh = onRefresh,
                 onTogglePlayPause = onTogglePlayPause,
-                onEditSource = onEditSource,
                 landscape = landscape,
             )
         }

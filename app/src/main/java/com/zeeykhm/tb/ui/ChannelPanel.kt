@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -46,6 +45,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.zeeykhm.tb.R
 import com.zeeykhm.tb.data.Channel
+import kotlinx.coroutines.delay
 
 @Composable
 fun ChannelPanel(
@@ -62,11 +64,11 @@ fun ChannelPanel(
     onClose: () -> Unit,
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
-    onEditSource: () -> Unit,
     landscape: Boolean = false,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val listState = rememberLazyListState()
+    val selectedFocus = remember { FocusRequester() }
 
     val filtered = remember(state.channels, query) {
         val needle = query.trim()
@@ -80,7 +82,11 @@ fun ChannelPanel(
     LaunchedEffect(state.currentIndex, query) {
         if (query.isBlank()) {
             val position = filtered.indexOfFirst { it.index == state.currentIndex }
-            if (position >= 0) listState.scrollToItem(position)
+            if (position >= 0) {
+                listState.scrollToItem(position)
+                delay(60)
+                runCatching { selectedFocus.requestFocus() }
+            }
         }
     }
 
@@ -185,17 +191,6 @@ fun ChannelPanel(
                 }
 
                 IconButton(
-                    onClick = onEditSource,
-                    modifier = Modifier.size(40.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Settings,
-                        contentDescription = stringResource(R.string.playlist_source),
-                        tint = TbText,
-                    )
-                }
-
-                IconButton(
                     onClick = onClose,
                     modifier = Modifier.size(40.dp),
                 ) {
@@ -273,6 +268,11 @@ fun ChannelPanel(
                         index = item.index,
                         channel = item.value,
                         selected = item.index == state.currentIndex,
+                        focusRequester = if (item.index == state.currentIndex) {
+                            selectedFocus
+                        } else {
+                            null
+                        },
                         onClick = { onSelect(item.index) },
                     )
                 }
@@ -303,12 +303,20 @@ private fun ChannelRow(
     index: Int,
     channel: Channel,
     selected: Boolean,
+    focusRequester: FocusRequester? = null,
     onClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .then(
+                if (focusRequester != null) {
+                    Modifier.focusRequester(focusRequester)
+                } else {
+                    Modifier
+                },
+            )
             .clickable(onClick = onClick)
             .background(if (selected) TbAccent.copy(alpha = 0.12f) else Color.Transparent)
             .padding(horizontal = 20.dp, vertical = 11.dp),

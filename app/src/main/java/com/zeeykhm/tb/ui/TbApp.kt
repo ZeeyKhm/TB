@@ -19,12 +19,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,13 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zeeykhm.tb.R
 
 @Composable
-fun TbApp(viewModel: TbViewModel = viewModel()) {
+fun TbApp(viewModel: TbViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var showSourceDialog by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -54,7 +48,8 @@ fun TbApp(viewModel: TbViewModel = viewModel()) {
                 onSelectChannel = viewModel::play,
                 onRefresh = viewModel::refresh,
                 onTogglePlayPause = viewModel::togglePlayPause,
-                onEditSource = { showSourceDialog = true },
+                onTogglePanel = viewModel::togglePanel,
+                onClosePanel = viewModel::closePanel,
                 onRetryPlayback = viewModel::retryPlayback,
             )
 
@@ -62,24 +57,8 @@ fun TbApp(viewModel: TbViewModel = viewModel()) {
                 message = state.error ?: "Couldn’t download the playlist.",
                 sourceUrl = state.sourceUrl,
                 onRetry = viewModel::refresh,
-                onEditSource = { showSourceDialog = true },
             )
         }
-    }
-
-    if (showSourceDialog) {
-        SourceDialog(
-            currentUrl = state.sourceUrl,
-            onSave = { url ->
-                viewModel.setSource(url)
-                showSourceDialog = false
-            },
-            onReset = {
-                viewModel.resetSource()
-                showSourceDialog = false
-            },
-            onDismiss = { showSourceDialog = false },
-        )
     }
 }
 
@@ -121,7 +100,6 @@ private fun ErrorScreen(
     message: String,
     sourceUrl: String,
     onRetry: () -> Unit,
-    onEditSource: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -171,12 +149,6 @@ private fun ErrorScreen(
                 )
                 Spacer(Modifier.size(8.dp))
                 Text(stringResource(R.string.try_again))
-            }
-            TextButton(onClick = onEditSource) {
-                Text(
-                    text = stringResource(R.string.change_url),
-                    color = TbMuted,
-                )
             }
         }
     }

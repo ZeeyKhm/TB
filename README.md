@@ -3,8 +3,8 @@
 A small Android player for an M3U/M3U8 playlist hosted on GitHub.
 
 Open the app and it starts playing the **first channel** in the playlist. Tap
-anywhere on the video and the **channel list** slides in from the left. Pick
-another channel and it starts immediately.
+anywhere on the video (or press **OK** on a TV remote) and the **channel list**
+slides in from the left. Pick another channel and it starts immediately.
 
 Built with Kotlin, Jetpack Compose and AndroidX Media3 (ExoPlayer). The playlist
 is fetched from a raw GitHub URL on every launch, so updating the channel list
@@ -17,16 +17,25 @@ is just a GitHub commit — no app update required.
 ## What it does
 
 - **Launches straight into playback** — no home screen, no "press play".
+- **Works with a TV remote**: **up/down** changes the volume, **left/right**
+  changes the channel (wrapping at either end), and **OK** opens the channel
+  list. While the list is open, up/down moves through it and OK picks a row;
+  left/right still zaps channels and closes the list.
 - **Tap the video** to toggle the channel list (a side panel in landscape).
 - **Search** the list by channel name or group.
 - **Refresh** re-downloads the playlist without restarting the app.
+- **Low-latency live tuning** — a short start-up buffer, live-edge targeting and
+  small speed nudges keep channels close to live, and fast decoder fallback
+  avoids stalls on devices with picky hardware decoders.
 - **HLS and DASH playback**, with **Widevine** licences and **ClearKey** keys
   read from `#KODIPROP` lines.
 - **Locked to landscape** — the player never rotates into portrait.
-- **Source** lets you paste a different raw URL for the current session. A cold
-  launch always returns to the playlist URL compiled into the app.
+- **Android TV ready** — leanback launcher entry and banner, `sensorLandscape`
+  playback, no touchscreen required.
 - Keeps the last good playlist on disk, so the app still works if GitHub is
-  temporarily unreachable (shows an "Offline copy" badge).
+  temporarily unreachable (shows an "Offline copy" badge) — and after the first
+  launch it starts playing from that copy immediately while refreshing in the
+  background.
 - Remembers playback across rotation and pauses when the app goes to the
   background.
 - Cleartext HTTP is allowed because many IPTV endpoints still use it.
@@ -111,11 +120,10 @@ gradlew.bat testDebugUnitTest
 gradlew.bat assembleDebug -PplaylistUrl=https://example.com/my-list.m3u8
 ```
 
-This only changes the compiled-in default. A URL entered in the app's Source
-dialog lasts until the app is closed; the next launch starts from the compiled-in
-URL again.
+This only changes the compiled-in default. There is no in-app settings screen;
+change the URL here (or in `playlist/tb.m3u8`) and rebuild.
 
-## Install on a phone
+## Install on a phone or TV
 
 With USB debugging enabled:
 
@@ -123,8 +131,8 @@ With USB debugging enabled:
 adb install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
-Or copy the APK to the phone and open it (allow "install unknown apps" for your
-file manager).
+Or copy the APK to the device and open it (allow "install unknown apps" for your
+file manager). On Android TV the app appears in the leanback launcher as **TB**.
 
 ## GitHub setup (first time)
 

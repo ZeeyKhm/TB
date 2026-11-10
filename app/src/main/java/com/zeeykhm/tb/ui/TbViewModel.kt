@@ -11,7 +11,11 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultLivePlaybackSpeedControl
+import androidx.media3.exoplayer.DefaultLoadControl
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.SeekParameters
 import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManager
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
@@ -47,6 +51,7 @@ data class TbUiState(
     val playbackError: String? = null,
     val buffering: Boolean = false,
     val isPlaying: Boolean = false,
+    val panelOpen: Boolean = false,
 ) {
     val currentChannel: Channel? get() = channels.getOrNull(currentIndex)
 }
@@ -65,7 +70,34 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
     )
     val state: StateFlow<TbUiState> = _state.asStateFlow()
 
-    val player: ExoPlayer = ExoPlayer.Builder(application)
+    /**
+     * Tuned for live TV: start after a short buffer, keep the read-ahead small
+     * and let the player nudge playback speed so it stays near the live edge.
+     */
+    val player: ExoPlayer = ExoPlayer.Builder(
+        application,
+        DefaultRenderersFactory(application).setEnableDecoderFallback(true),
+    )
+        .setLoadControl(
+            DefaultLoadControl.Builder()
+                .setBufferDurationsMs(
+                    /* minBufferMs = */ 2_000,
+                    /* maxBufferMs = */ 12_000,
+                    /* bufferForPlaybackMs = */ 700,
+                    /* bufferForPlaybackAfterRebufferMs = */ 1_200,
+                )
+                .setBackBuffer(0, false)
+                .setPrioritizeTimeOverSizeThresholds(true)
+                .build(),
+        )
+        .setLivePlaybackSpeedControl(
+            DefaultLivePlaybackSpeedControl.Builder()
+                .setFallbackMinPlaybackSpeed(0.95f)
+                .setFallbackMaxPlaybackSpeed(1.08f)
+                .setMinUpdateIntervalMs(1_000)
+                .build(),
+        )
+        .setWakeMode(C.WAKE_MODE_NETWORK)
         .setAudioAttributes(
             AudioAttributes.Builder()
                 .setUsage(C.USAGE_MEDIA)
@@ -82,6 +114,8 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
     private val drmManagers = mutableMapOf<DrmInfo, DrmSessionManager>()
 
     init {
+        player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
+
         player.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 _state.update {
@@ -107,7 +141,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
             }
         })
 
-        load(resetToFirst = true)
+        load(resetToFirst = true, allowCacheFirst = true)
     }
 
     fun refresh() {
@@ -127,6 +161,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
                 error = null,
                 playbackError = null,
                 isPlaying = false,
+                panelOpen = false,
             )
         }
         load(resetToFirst = true)
@@ -169,6 +204,9 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun createMediaSourceFactory(channel: Channel): DefaultMediaSourceFactory {
         val httpFactory = DefaultHttpDataSource.Factory()
+            .setConnectTimeoutMs(5_000)
+            .setReadTimeoutMs(10_000)
+            .setAllowCrossProtocolRedirects(true)
 
         channel.httpHeaders["User-Agent"]
             ?.takeIf { it.isNotBlank() }
@@ -183,6 +221,12 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         return DefaultMediaSourceFactory(
             DefaultDataSource.Factory(getApplication<Application>(), httpFactory),
         )
+            // Stay close to the live edge; speed control catches up after a hiccup.
+            .setLiveTargetOffsetMs(2_500)
+            .setLiveMinOffsetMs(1_500)
+            .setLiveMaxOffsetMs(12_000)
+            .setLiveMinSpeed(0.95f)
+            .setLiveMaxSpeed(1.08f)
     }
 
     /**
@@ -256,6 +300,33 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         play(_state.value.currentIndex)
     }
 
+    /** Left/right on the remote zaps channels, wrapping at either end. */
+    fun nextChannel() = stepChannel(1)
+
+    fun previousChannel() = stepChannel(-1)
+
+    private fun stepChannel(delta: Int) {
+        val current = _state.value
+        if (current.channels.isEmpty()) return
+        val next = (current.currentIndex + delta + current.channels.size) % current.channels.size
+        if (next != current.currentIndex) {
+            closePanel()
+            play(next)
+        }
+    }
+
+    fun openPanel() {
+        _state.update { it.copy(panelOpen = true) }
+    }
+
+    fun closePanel() {
+        _state.update { it.copy(panelOpen = false) }
+    }
+
+    fun togglePanel() {
+        _state.update { it.copy(panelOpen = !it.panelOpen) }
+    }
+
     fun togglePlayPause() {
         when {
             player.playbackState == Player.STATE_IDLE -> play(_state.value.currentIndex)
@@ -268,7 +339,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun load(resetToFirst: Boolean) {
+    private fun load(resetToFirst: Boolean, allowCacheFirst: Boolean = false) {
         val url = settings.playlistUrl
         _state.update {
             it.copy(
@@ -281,6 +352,24 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
 
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
+            // Start from the last good playlist immediately, then refresh it.
+            if (allowCacheFirst && _state.value.channels.isEmpty()) {
+                repository.cached(url)?.let { cached ->
+                    if (!isActive) return@launch
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            refreshing = true,
+                            channels = cached.channels,
+                            currentIndex = 0,
+                            offline = true,
+                            error = null,
+                        )
+                    }
+                    play(0)
+                }
+            }
+
             try {
                 val result = repository.load(url, forceRefresh = true)
                 if (!isActive) return@launch
@@ -304,7 +393,13 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
                         error = null,
                     )
                 }
-                play(index)
+
+                // Don't restart a stream that is already playing the same channel.
+                val nextUrl = result.channels.getOrNull(index)?.url
+                val needsPlay = nextUrl != previousUrl ||
+                    player.playbackState == Player.STATE_IDLE ||
+                    _state.value.playbackError != null
+                if (needsPlay) play(index)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
