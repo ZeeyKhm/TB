@@ -112,7 +112,28 @@ Then:
 gradlew.bat assembleDebug
 ```
 
-The APK lands at `app/build/outputs/apk/debug/app-debug.apk`.
+The debug APK lands at `app/build/outputs/apk/debug/app-debug.apk`.
+
+For a signed, minified **release** build:
+
+```bat
+gradlew.bat assembleRelease
+```
+
+The release APK lands at `app/build/outputs/apk/release/app-release.apk`.
+
+Release signing reads `keystore.properties` from the repo root (git-ignored):
+
+```properties
+storeFile=keystore/tb-release.jks
+storePassword=…
+keyAlias=tb
+keyPassword=…
+```
+
+Create the keystore once with `keytool`, or copy an existing one to
+`keystore/tb-release.jks`. **Back it up** — without it you cannot install an
+update over a release build signed with the old key.
 
 Run the parser unit tests with:
 
@@ -134,7 +155,7 @@ change the URL here (or in `playlist/tb.m3u8`) and rebuild.
 With USB debugging enabled:
 
 ```bat
-adb install -r app\build\outputs\apk\debug\app-debug.apk
+adb install -r app\build\outputs\apk\release\app-release.apk
 ```
 
 Or copy the APK to the device and open it (allow "install unknown apps" for your
@@ -173,8 +194,11 @@ token, and this app intentionally does not embed credentials.
   URL compiled into the app.
 - The activity is locked to landscape (`sensorLandscape`), so it flips between
   the two landscape sides but never shows portrait.
-- The debug APK is signed with Android's debug key. For a Play Store release,
-  add your own signing config and run `assembleRelease`.
+- Release builds are signed with the keystore in `keystore/` and its passwords in
+  `keystore.properties`; both are git-ignored. Back them up, because losing them
+  means you cannot update an installed release build.
+- The GitHub Actions workflow builds a debug APK as a quick sanity check. Install
+  the signed release APK from `dist/` or `app/build/outputs/apk/release/`.
 
 ## Legal
 

@@ -4,6 +4,10 @@
 .idea/
 .DS_Store
 local.properties
+keystore.properties
+keystore/
+*.jks
+*.keystore
 build/
 captures/
 .externalNativeBuild/
