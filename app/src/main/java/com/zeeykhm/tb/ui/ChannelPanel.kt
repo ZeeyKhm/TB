@@ -24,9 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -36,9 +38,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -51,6 +56,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.zeeykhm.tb.R
@@ -65,9 +72,13 @@ fun ChannelPanel(
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
     onSelectMode: (Boolean) -> Unit,
+    onSubmitPin: (String) -> Boolean,
     landscape: Boolean = false,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
+    var infoClicks by remember { mutableIntStateOf(0) }
+    var lastInfoClickAt by remember { mutableLongStateOf(0L) }
+    var pinPrompt by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val selectedFocus = remember { FocusRequester() }
 
@@ -81,7 +92,7 @@ fun ChannelPanel(
         }
     }
 
-    LaunchedEffect(state.currentIndex, state.radioMode, query) {
+    LaunchedEffect(state.currentIndex, state.radioMode, state.hiddenEnabled, query) {
         if (query.isBlank()) {
             val position = filtered.indexOfFirst { it.index == state.currentIndex }
             if (position >= 0) {
@@ -144,7 +155,7 @@ fun ChannelPanel(
                             style = MaterialTheme.typography.labelSmall,
                             color = TbAccent,
                         )
-                        if (state.refreshing) {
+                        if (state.refreshing || state.hiddenLoading) {
                             Spacer(Modifier.width(10.dp))
                             CircularProgressIndicator(
                                 modifier = Modifier.size(12.dp),
@@ -155,11 +166,19 @@ fun ChannelPanel(
                     }
                     Spacer(Modifier.height(2.dp))
                     Text(
-                        text = stringResource(
-                            R.string.channel_count_split,
-                            state.tvCount,
-                            state.radioCount,
-                        ),
+                        text = if (state.hiddenEnabled) {
+                            stringResource(
+                                R.string.hidden_count_split,
+                                state.tvCount,
+                                state.radioCount,
+                            )
+                        } else {
+                            stringResource(
+                                R.string.channel_count_split,
+                                state.tvCount,
+                                state.radioCount,
+                            )
+                        },
                         style = MaterialTheme.typography.titleMedium,
                         color = TbText,
                     )
@@ -181,14 +200,33 @@ fun ChannelPanel(
                 }
 
                 IconButton(
+                    onClick = {
+                        val now = System.currentTimeMillis()
+                        infoClicks = if (now - lastInfoClickAt > 2_500L) 1 else infoClicks + 1
+                        lastInfoClickAt = now
+                        if (infoClicks >= 3) {
+                            infoClicks = 0
+                            pinPrompt = true
+                        }
+                    },
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = stringResource(R.string.hidden_channels),
+                        tint = if (state.hiddenEnabled) TbAccent else TbText,
+                    )
+                }
+
+                IconButton(
                     onClick = onRefresh,
-                    enabled = !state.refreshing,
+                    enabled = !state.refreshing && !state.hiddenLoading,
                     modifier = Modifier.size(40.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Refresh,
                         contentDescription = stringResource(R.string.refresh),
-                        tint = if (state.refreshing) {
+                        tint = if (state.refreshing || state.hiddenLoading) {
                             TbMuted.copy(alpha = 0.4f)
                         } else {
                             TbText
@@ -227,6 +265,24 @@ fun ChannelPanel(
                     selected = state.radioMode,
                     onClick = { onSelectMode(true) },
                     modifier = Modifier.weight(1f),
+                )
+            }
+
+            if (state.hiddenLoading) {
+                Text(
+                    text = stringResource(R.string.loading_hidden),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TbMuted,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp),
+                )
+            }
+
+            state.hiddenError?.let { message ->
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp),
                 )
             }
 
@@ -328,6 +384,105 @@ fun ChannelPanel(
             }
         }
     }
+
+    if (pinPrompt) {
+        HiddenPinDialog(
+            hiding = state.hiddenEnabled,
+            onDismiss = { pinPrompt = false },
+            onSubmit = { pin ->
+                val accepted = onSubmitPin(pin)
+                if (accepted) pinPrompt = false
+                accepted
+            },
+        )
+    }
+}
+
+@Composable
+private fun HiddenPinDialog(
+    hiding: Boolean,
+    onDismiss: () -> Unit,
+    onSubmit: (String) -> Boolean,
+) {
+    var pin by rememberSaveable { mutableStateOf("") }
+    var wrongPin by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = TbSurface,
+        title = {
+            Text(
+                text = stringResource(
+                    if (hiding) R.string.hide_hidden_channels else R.string.show_hidden_channels,
+                ),
+                style = MaterialTheme.typography.titleMedium,
+                color = TbText,
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.enter_pin),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TbMuted,
+                )
+                Spacer(Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = pin,
+                    onValueChange = { value ->
+                        pin = value.filter { it.isDigit() }.take(4)
+                        wrongPin = false
+                    },
+                    singleLine = true,
+                    isError = wrongPin,
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.NumberPassword,
+                        imeAction = ImeAction.Done,
+                    ),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = TbSurfaceHigh.copy(alpha = 0.55f),
+                        unfocusedContainerColor = TbSurfaceHigh.copy(alpha = 0.55f),
+                        focusedBorderColor = TbAccent.copy(alpha = 0.65f),
+                        unfocusedBorderColor = Color.Transparent,
+                        cursorColor = TbAccent,
+                        focusedTextColor = TbText,
+                        unfocusedTextColor = TbText,
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                if (wrongPin) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.wrong_pin),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    if (!onSubmit(pin)) wrongPin = true
+                },
+            ) {
+                Text(
+                    text = stringResource(R.string.unlock),
+                    color = TbAccent,
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = stringResource(R.string.cancel),
+                    color = TbMuted,
+                )
+            }
+        },
+    )
 }
 
 @Composable

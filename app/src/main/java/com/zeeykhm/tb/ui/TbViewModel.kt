@@ -52,6 +52,11 @@ data class TbUiState(
     val buffering: Boolean = false,
     val isPlaying: Boolean = false,
     val panelOpen: Boolean = false,
+    val mainChannels: List<Channel> = emptyList(),
+    val hiddenChannels: List<Channel> = emptyList(),
+    val hiddenEnabled: Boolean = false,
+    val hiddenLoading: Boolean = false,
+    val hiddenError: String? = null,
 ) {
     val currentChannel: Channel? get() = channels.getOrNull(currentIndex)
 
@@ -71,6 +76,19 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = PlaylistRepository(application)
     private val settings = SettingsStore()
+
+    companion object {
+        /** Default PIN for the hidden channels. */
+        private const val HIDDEN_PIN = "1234"
+
+        /** Extra playlists revealed only after the PIN sequence. */
+        val HIDDEN_PLAYLISTS = listOf(
+            "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plutotv_all.m3u",
+            "https://www.apsattv.com/whaletvplus_all.m3u",
+            "https://www.apsattv.com/xiaomi.m3u",
+            "https://www.apsattv.com/vidaa.m3u",
+        )
+    }
 
     private val _state = MutableStateFlow(
         TbUiState(sourceUrl = settings.playlistUrl),
@@ -116,8 +134,11 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         .build()
 
     private var loadJob: Job? = null
+    private var hiddenLoadJob: Job? = null
     private var lastTvIndex: Int? = null
     private var lastRadioIndex: Int? = null
+    private var lastMainIndex: Int? = null
+    private var lastHiddenIndex: Int? = null
 
     /** ClearKey licences are local, so they need a hand-built DRM session manager. */
     private val drmManagers = mutableMapOf<DrmInfo, DrmSessionManager>()
@@ -154,18 +175,31 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refresh() {
-        load(resetToFirst = false)
+        if (_state.value.hiddenEnabled) {
+            loadHidden(forceRefresh = true, switchTo = true)
+        } else {
+            load(resetToFirst = false)
+        }
     }
 
     fun setSource(url: String) {
         settings.playlistUrl = url
         player.stop()
         player.clearMediaItems()
+        loadJob?.cancel()
+        hiddenLoadJob?.cancel()
         lastTvIndex = null
         lastRadioIndex = null
+        lastMainIndex = null
+        lastHiddenIndex = null
         _state.update {
             it.copy(
                 channels = emptyList(),
+                mainChannels = emptyList(),
+                hiddenChannels = emptyList(),
+                hiddenEnabled = false,
+                hiddenLoading = false,
+                hiddenError = null,
                 currentIndex = 0,
                 sourceUrl = settings.playlistUrl,
                 offline = false,
@@ -185,7 +219,12 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
 
     fun play(index: Int) {
         val channel = _state.value.channels.getOrNull(index) ?: return
-        if (channel.isRadio) lastRadioIndex = index else lastTvIndex = index
+        if (_state.value.hiddenEnabled) {
+            lastHiddenIndex = index
+        } else {
+            if (channel.isRadio) lastRadioIndex = index else lastTvIndex = index
+            lastMainIndex = index
+        }
 
         _state.update {
             it.copy(
@@ -325,10 +364,137 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         val candidates = current.channels.withIndex().filter { it.value.isRadio == radio }
         if (candidates.isEmpty()) return
 
-        val remembered = if (radio) lastRadioIndex else lastTvIndex
+        val remembered = if (current.hiddenEnabled) {
+            lastHiddenIndex
+        } else if (radio) {
+            lastRadioIndex
+        } else {
+            lastTvIndex
+        }
         val target = candidates.firstOrNull { it.index == remembered }?.index
             ?: candidates.first().index
         play(target)
+    }
+
+    /**
+     * Checks the info-button PIN. Returns true when it matched, then toggles the
+     * hidden channel section on or off.
+     */
+    fun submitHiddenPin(pin: String): Boolean {
+        if (pin.trim() != HIDDEN_PIN) return false
+        if (_state.value.hiddenLoading) return true
+        if (_state.value.hiddenEnabled) hideHidden() else showHidden()
+        return true
+    }
+
+    private fun showHidden() {
+        val current = _state.value
+        if (current.hiddenChannels.isEmpty()) {
+            loadHidden(forceRefresh = false, switchTo = true)
+            return
+        }
+
+        val channels = current.hiddenChannels
+        val target = lastHiddenIndex?.takeIf { it in channels.indices }
+            ?: channels.indexOfFirst { !it.isRadio }.takeIf { it >= 0 }
+            ?: 0
+        _state.update {
+            it.copy(
+                hiddenEnabled = true,
+                channels = channels,
+                currentIndex = target,
+                playbackError = null,
+                panelOpen = true,
+                hiddenError = null,
+            )
+        }
+        play(target)
+    }
+
+    private fun hideHidden() {
+        val main = _state.value.mainChannels
+        if (main.isEmpty()) return
+
+        val target = lastMainIndex?.takeIf { it in main.indices }
+            ?: main.indexOfFirst { !it.isRadio }.takeIf { it >= 0 }
+            ?: 0
+        _state.update {
+            it.copy(
+                hiddenEnabled = false,
+                channels = main,
+                currentIndex = target,
+                playbackError = null,
+                panelOpen = true,
+                hiddenError = null,
+            )
+        }
+        play(target)
+    }
+
+    private fun loadHidden(forceRefresh: Boolean, switchTo: Boolean) {
+        if (_state.value.hiddenLoading) return
+        _state.update { it.copy(hiddenLoading = true, hiddenError = null, panelOpen = true) }
+
+        hiddenLoadJob?.cancel()
+        hiddenLoadJob = viewModelScope.launch {
+            try {
+                val result = repository.loadAll(HIDDEN_PLAYLISTS, forceRefresh)
+                if (!isActive) return@launch
+
+                val channels = result.channels
+                val previousUrl = _state.value.takeIf { it.hiddenEnabled }
+                    ?.channels
+                    ?.getOrNull(_state.value.currentIndex)
+                    ?.url
+                val target = channels.indexOfFirst { it.url == previousUrl }
+                    .takeIf { it >= 0 }
+                    ?: lastHiddenIndex?.takeIf { it in channels.indices }
+                    ?: channels.indexOfFirst { !it.isRadio }.takeIf { it >= 0 }
+                    ?: 0
+
+                _state.update { state ->
+                    if (switchTo) {
+                        state.copy(
+                            hiddenChannels = channels,
+                            hiddenLoading = false,
+                            hiddenError = null,
+                            hiddenEnabled = true,
+                            channels = channels,
+                            currentIndex = target,
+                            playbackError = null,
+                        )
+                    } else {
+                        state.copy(
+                            hiddenChannels = channels,
+                            hiddenLoading = false,
+                            hiddenError = null,
+                        )
+                    }
+                }
+                if (switchTo) play(target)
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                _state.update {
+                    it.copy(
+                        hiddenLoading = false,
+                        hiddenError = hiddenMessage(error),
+                    )
+                }
+            }
+        }
+    }
+
+    private fun hiddenMessage(error: Throwable): String {
+        val raw = error.message?.takeIf { it.isNotBlank() }
+        return when {
+            error is UnknownHostException ->
+                "Can’t reach the hidden playlist hosts. Check your internet connection."
+            error is SocketTimeoutException ->
+                "The hidden playlists took too long to load. Try again."
+            raw != null -> raw
+            else -> "Couldn’t load the hidden channels."
+        }
     }
 
     private fun stepChannel(delta: Int) {
@@ -400,6 +566,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
                             loading = false,
                             refreshing = true,
                             channels = cached.channels,
+                            mainChannels = cached.channels,
                             currentIndex = 0,
                             offline = true,
                             error = null,
@@ -422,23 +589,29 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
                         ?: 0
                 }
 
+                // A hidden section may be on screen; only swap it out when the
+                // main list is the one being shown.
+                val hiddenShowing = _state.value.hiddenEnabled
                 _state.update {
                     it.copy(
                         loading = false,
                         refreshing = false,
-                        channels = result.channels,
-                        currentIndex = index,
+                        channels = if (hiddenShowing) it.channels else result.channels,
+                        mainChannels = result.channels,
+                        currentIndex = if (hiddenShowing) it.currentIndex else index,
                         offline = result.offline,
                         error = null,
                     )
                 }
 
-                // Don't restart a stream that is already playing the same channel.
-                val nextUrl = result.channels.getOrNull(index)?.url
-                val needsPlay = nextUrl != previousUrl ||
-                    player.playbackState == Player.STATE_IDLE ||
-                    _state.value.playbackError != null
-                if (needsPlay) play(index)
+                if (!hiddenShowing) {
+                    // Don't restart a stream that is already playing the same channel.
+                    val nextUrl = result.channels.getOrNull(index)?.url
+                    val needsPlay = nextUrl != previousUrl ||
+                        player.playbackState == Player.STATE_IDLE ||
+                        _state.value.playbackError != null
+                    if (needsPlay) play(index)
+                }
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
@@ -512,6 +685,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
 
     override fun onCleared() {
         loadJob?.cancel()
+        hiddenLoadJob?.cancel()
         drmManagers.values.forEach { runCatching { it.release() } }
         drmManagers.clear()
         player.release()

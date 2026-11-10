@@ -49,6 +49,7 @@ fun TbApp(viewModel: TbViewModel) {
                 onRefresh = viewModel::refresh,
                 onTogglePlayPause = viewModel::togglePlayPause,
                 onSelectMode = viewModel::setRadioMode,
+                onSubmitPin = viewModel::submitHiddenPin,
                 onTogglePanel = viewModel::togglePanel,
                 onClosePanel = viewModel::closePanel,
                 onRetryPlayback = viewModel::retryPlayback,

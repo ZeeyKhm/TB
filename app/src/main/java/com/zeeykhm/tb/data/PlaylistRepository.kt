@@ -6,6 +6,9 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,6 +26,7 @@ class PlaylistRepository(context: Context) {
 
     private val appContext = context.applicationContext
     private val cacheFile = File(appContext.filesDir, "last_playlist.m3u8")
+    private val hiddenCacheFile = File(appContext.filesDir, "hidden_playlists.m3u8")
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(8, TimeUnit.SECONDS)
@@ -66,6 +70,44 @@ class PlaylistRepository(context: Context) {
         val channels = runCatching { parse(body, url) }.getOrNull()
         if (channels.isNullOrEmpty()) null else PlaylistResult(channels, offline = true)
     }
+
+    /**
+     * Downloads several playlists (the PIN-protected hidden channels), parses
+     * each against its own URL and merges them by stream URL. A playlist that
+     * fails to download is skipped so the others still load.
+     */
+    suspend fun loadAll(urls: List<String>, forceRefresh: Boolean): PlaylistResult =
+        withContext(Dispatchers.IO) {
+            val downloaded = coroutineScope {
+                urls.map { url ->
+                    async { runCatching { download(url, forceRefresh) }.getOrNull() }
+                }.awaitAll()
+            }.filterNotNull()
+
+            if (downloaded.isEmpty()) {
+                val cached = readHiddenCache()
+                    ?.let { body ->
+                        runCatching { parse(body, urls.firstOrNull().orEmpty()) }.getOrNull()
+                    }
+                if (!cached.isNullOrEmpty()) {
+                    return@withContext PlaylistResult(cached, offline = true)
+                }
+                throw IOException("Couldn't load the hidden playlists.")
+            }
+
+            val channels = downloaded
+                .filter { (body, _) -> looksLikePlaylist(body) }
+                .flatMap { (body, finalUrl) -> parse(body, finalUrl) }
+                .distinctBy { it.url }
+            if (channels.isEmpty()) {
+                throw IOException("The hidden playlists have no channels.")
+            }
+
+            runCatching {
+                hiddenCacheFile.writeText(downloaded.joinToString("\n") { it.first })
+            }
+            PlaylistResult(channels, offline = downloaded.size < urls.size)
+        }
 
     /**
      * Downloads [url]. If a `.m3u8` playlist is not there yet (404), retries the
@@ -119,6 +161,9 @@ class PlaylistRepository(context: Context) {
 
     private fun readCache(): String? =
         runCatching { cacheFile.takeIf { it.isFile }?.readText() }.getOrNull()
+
+    private fun readHiddenCache(): String? =
+        runCatching { hiddenCacheFile.takeIf { it.isFile }?.readText() }.getOrNull()
 
     private fun looksLikePlaylist(text: String): Boolean {
         if (text.isBlank()) return false

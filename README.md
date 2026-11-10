@@ -24,6 +24,10 @@ is just a GitHub commit — no app update required.
 - **Tap the video** to toggle the channel list (a side panel in landscape).
 - **TV and Radio are separate sections** — the channel list has TV/Radio tabs
   with counts, and zapping stays inside the section that is playing.
+- **Hidden channels** — tap the **info** button three times and enter the PIN
+  (`1234` by default) to load the extra Pluto TV, Whale TV Plus, Xiaomi and
+  Vidaa TV lists. They are split into TV and Radio too; repeat the same
+  sequence to hide them again.
 - **Search** the list by channel name or group.
 - **Refresh** re-downloads the playlist without restarting the app.
 - **Low-latency live tuning** — a short start-up buffer, live-edge targeting and

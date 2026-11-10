@@ -49,6 +49,7 @@ fun PlayerScreen(
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
     onSelectMode: (Boolean) -> Unit,
+    onSubmitPin: (String) -> Boolean,
     onTogglePanel: () -> Unit,
     onClosePanel: () -> Unit,
     onRetryPlayback: () -> Unit,
@@ -211,6 +212,7 @@ fun PlayerScreen(
                 onRefresh = onRefresh,
                 onTogglePlayPause = onTogglePlayPause,
                 onSelectMode = onSelectMode,
+                onSubmitPin = onSubmitPin,
                 landscape = landscape,
             )
         }
