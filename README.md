@@ -18,10 +18,12 @@ is just a GitHub commit — no app update required.
 
 - **Launches straight into playback** — no home screen, no "press play".
 - **Works with a TV remote**: **up/down** changes the volume, **left/right**
-  changes the channel (wrapping at either end), and **OK** opens the channel
-  list. While the list is open, up/down moves through it and OK picks a row;
-  left/right still zaps channels and closes the list.
+  changes the channel (wrapping inside the current TV or Radio section), and
+  **OK** opens the channel list. While the list is open, up/down moves through
+  it and OK picks a row; left/right still zaps channels and closes the list.
 - **Tap the video** to toggle the channel list (a side panel in landscape).
+- **TV and Radio are separate sections** — the channel list has TV/Radio tabs
+  with counts, and zapping stays inside the section that is playing.
 - **Search** the list by channel name or group.
 - **Refresh** re-downloads the playlist without restarting the app.
 - **Low-latency live tuning** — a short start-up buffer, live-edge targeting and

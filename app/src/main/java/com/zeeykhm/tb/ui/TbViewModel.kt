@@ -54,6 +54,13 @@ data class TbUiState(
     val panelOpen: Boolean = false,
 ) {
     val currentChannel: Channel? get() = channels.getOrNull(currentIndex)
+
+    /** The section currently playing: TV or Radio. */
+    val radioMode: Boolean get() = currentChannel?.isRadio == true
+
+    val tvCount: Int get() = channels.count { !it.isRadio }
+
+    val radioCount: Int get() = channels.count { it.isRadio }
 }
 
 /**
@@ -109,6 +116,8 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         .build()
 
     private var loadJob: Job? = null
+    private var lastTvIndex: Int? = null
+    private var lastRadioIndex: Int? = null
 
     /** ClearKey licences are local, so they need a hand-built DRM session manager. */
     private val drmManagers = mutableMapOf<DrmInfo, DrmSessionManager>()
@@ -152,6 +161,8 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         settings.playlistUrl = url
         player.stop()
         player.clearMediaItems()
+        lastTvIndex = null
+        lastRadioIndex = null
         _state.update {
             it.copy(
                 channels = emptyList(),
@@ -174,6 +185,7 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
 
     fun play(index: Int) {
         val channel = _state.value.channels.getOrNull(index) ?: return
+        if (channel.isRadio) lastRadioIndex = index else lastTvIndex = index
 
         _state.update {
             it.copy(
@@ -300,15 +312,42 @@ class TbViewModel(application: Application) : AndroidViewModel(application) {
         play(_state.value.currentIndex)
     }
 
-    /** Left/right on the remote zaps channels, wrapping at either end. */
+    /** Left/right on the remote zaps channels, wrapping inside the active section. */
     fun nextChannel() = stepChannel(1)
 
     fun previousChannel() = stepChannel(-1)
 
+    /** Switch the whole list between TV and Radio, returning to that section's last channel. */
+    fun setRadioMode(radio: Boolean) {
+        val current = _state.value
+        if (current.radioMode == radio) return
+
+        val candidates = current.channels.withIndex().filter { it.value.isRadio == radio }
+        if (candidates.isEmpty()) return
+
+        val remembered = if (radio) lastRadioIndex else lastTvIndex
+        val target = candidates.firstOrNull { it.index == remembered }?.index
+            ?: candidates.first().index
+        play(target)
+    }
+
     private fun stepChannel(delta: Int) {
         val current = _state.value
         if (current.channels.isEmpty()) return
-        val next = (current.currentIndex + delta + current.channels.size) % current.channels.size
+
+        val radio = current.currentChannel?.isRadio ?: current.radioMode
+        val indices = current.channels.indices.filter {
+            current.channels[it].isRadio == radio
+        }
+        if (indices.isEmpty()) return
+
+        val position = indices.indexOf(current.currentIndex)
+        val nextPosition = if (position >= 0) {
+            (position + delta + indices.size) % indices.size
+        } else {
+            0
+        }
+        val next = indices[nextPosition]
         if (next != current.currentIndex) {
             closePanel()
             play(next)

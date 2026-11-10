@@ -252,6 +252,28 @@ class M3uParserTest {
     }
 
     @Test
+    fun `marks radio stations separately from tv channels`() {
+        val playlist = """
+            #EXTM3U
+            #EXTINF:-1 group-title="News",News 24
+            https://example.com/news.m3u8
+            #EXTINF:-1 group-title="Radio",Radio One
+            https://example.com/radio-one
+            #EXTINF:-1 tvg-id="BBCRadio2.uk" group-title="UK",BBC Radio 2
+            https://example.com/radio-two
+            #EXTINF:-1 tvg-id="BBCRadioWorldService.uk" group-title="UK",BBC World Service
+            https://example.com/world-service
+        """.trimIndent()
+
+        val channels = M3uParser.parse(playlist)
+
+        assertEquals(false, channels[0].isRadio)
+        assertTrue(channels[1].isRadio)
+        assertTrue(channels[2].isRadio)
+        assertTrue(channels[3].isRadio)
+    }
+
+    @Test
     fun `empty and header-only playlists yield no channels`() {
         assertTrue(M3uParser.parse("").isEmpty())
         assertTrue(M3uParser.parse("#EXTM3U\n").isEmpty())

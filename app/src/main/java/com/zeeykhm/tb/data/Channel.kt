@@ -12,6 +12,8 @@ data class Channel(
     val group: String? = null,
     val logoUrl: String? = null,
     val tvgId: String? = null,
+    /** Audio-only station, shown in the Radio section instead of TV. */
+    val isRadio: Boolean = false,
     /** `dash`, `hls`, … from `#KODIPROP:inputstream.adaptive.manifest_type`. */
     val manifestType: String? = null,
     val drm: DrmInfo? = null,

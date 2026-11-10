@@ -48,6 +48,7 @@ fun PlayerScreen(
     onSelectChannel: (Int) -> Unit,
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
+    onSelectMode: (Boolean) -> Unit,
     onTogglePanel: () -> Unit,
     onClosePanel: () -> Unit,
     onRetryPlayback: () -> Unit,
@@ -209,6 +210,7 @@ fun PlayerScreen(
                 onClose = onClosePanel,
                 onRefresh = onRefresh,
                 onTogglePlayPause = onTogglePlayPause,
+                onSelectMode = onSelectMode,
                 landscape = landscape,
             )
         }

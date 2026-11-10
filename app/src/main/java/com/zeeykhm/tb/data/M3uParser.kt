@@ -105,15 +105,18 @@ object M3uParser {
                     val name = pendingName?.ifBlank { null }
                         ?: attributes["tvg-name"]?.ifBlank { null }
                         ?: deriveName(url)
+                    val group = pendingGroup?.ifBlank { null }
+                    val tvgId = attributes["tvg-id"]?.ifBlank { null }
 
                     channels.putIfAbsent(
                         url,
                         Channel(
                             name = name,
                             url = url,
-                            group = pendingGroup?.ifBlank { null },
+                            group = group,
                             logoUrl = attributes["tvg-logo"]?.ifBlank { null },
-                            tvgId = attributes["tvg-id"]?.ifBlank { null },
+                            tvgId = tvgId,
+                            isRadio = isRadioChannel(group, tvgId, name),
                             manifestType = pendingManifestType?.ifBlank { null },
                             drm = buildDrm(pendingLicenseType, pendingLicenseKey),
                             httpHeaders = pendingHeaders + urlHeaders,
@@ -257,6 +260,15 @@ object M3uParser {
         }
         return -1
     }
+
+    /**
+     * Radio entries are not always labelled consistently: some use
+     * `group-title="Radio"`, others only carry it in the tvg-id or name.
+     */
+    private fun isRadioChannel(group: String?, tvgId: String?, name: String): Boolean =
+        sequenceOf(group, tvgId, name).any { value ->
+            value?.contains("radio", ignoreCase = true) == true
+        }
 
     private fun deriveName(url: String): String {
         val withoutScheme = url.substringAfter("://", url)

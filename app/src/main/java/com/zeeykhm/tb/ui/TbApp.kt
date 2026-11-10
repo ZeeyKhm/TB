@@ -48,6 +48,7 @@ fun TbApp(viewModel: TbViewModel) {
                 onSelectChannel = viewModel::play,
                 onRefresh = viewModel::refresh,
                 onTogglePlayPause = viewModel::togglePlayPause,
+                onSelectMode = viewModel::setRadioMode,
                 onTogglePanel = viewModel::togglePanel,
                 onClosePanel = viewModel::closePanel,
                 onRetryPlayback = viewModel::retryPlayback,

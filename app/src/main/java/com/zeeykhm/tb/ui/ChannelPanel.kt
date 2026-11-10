@@ -64,22 +64,24 @@ fun ChannelPanel(
     onClose: () -> Unit,
     onRefresh: () -> Unit,
     onTogglePlayPause: () -> Unit,
+    onSelectMode: (Boolean) -> Unit,
     landscape: Boolean = false,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val listState = rememberLazyListState()
     val selectedFocus = remember { FocusRequester() }
 
-    val filtered = remember(state.channels, query) {
+    val filtered = remember(state.channels, state.radioMode, query) {
         val needle = query.trim()
         state.channels.withIndex().filter { (_, channel) ->
-            needle.isEmpty() ||
-                channel.name.contains(needle, ignoreCase = true) ||
-                channel.group?.contains(needle, ignoreCase = true) == true
+            channel.isRadio == state.radioMode &&
+                (needle.isEmpty() ||
+                    channel.name.contains(needle, ignoreCase = true) ||
+                    channel.group?.contains(needle, ignoreCase = true) == true)
         }
     }
 
-    LaunchedEffect(state.currentIndex, query) {
+    LaunchedEffect(state.currentIndex, state.radioMode, query) {
         if (query.isBlank()) {
             val position = filtered.indexOfFirst { it.index == state.currentIndex }
             if (position >= 0) {
@@ -153,7 +155,11 @@ fun ChannelPanel(
                     }
                     Spacer(Modifier.height(2.dp))
                     Text(
-                        text = stringResource(R.string.channel_count, state.channels.size),
+                        text = stringResource(
+                            R.string.channel_count_split,
+                            state.tvCount,
+                            state.radioCount,
+                        ),
                         style = MaterialTheme.typography.titleMedium,
                         color = TbText,
                     )
@@ -200,6 +206,28 @@ fun ChannelPanel(
                         tint = TbText,
                     )
                 }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+            ) {
+                ModeTab(
+                    label = stringResource(R.string.tv),
+                    count = state.tvCount,
+                    selected = !state.radioMode,
+                    onClick = { onSelectMode(false) },
+                    modifier = Modifier.weight(1f),
+                )
+                ModeTab(
+                    label = stringResource(R.string.radio),
+                    count = state.radioCount,
+                    selected = state.radioMode,
+                    onClick = { onSelectMode(true) },
+                    modifier = Modifier.weight(1f),
+                )
             }
 
             OutlinedTextField(
@@ -286,7 +314,11 @@ fun ChannelPanel(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = stringResource(R.string.no_matches, query.trim()),
+                                text = if (query.isBlank()) {
+                                    stringResource(R.string.no_channels_in_section)
+                                } else {
+                                    stringResource(R.string.no_matches, query.trim())
+                                },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = TbMuted,
                             )
@@ -294,6 +326,44 @@ fun ChannelPanel(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ModeTab(
+    label: String,
+    count: Int,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(12.dp),
+        color = if (selected) TbAccent else TbSurfaceHigh.copy(alpha = 0.55f),
+        contentColor = if (selected) Color.White else TbMuted,
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 10.dp),
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(Modifier.width(6.dp))
+            Text(
+                text = count.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                color = if (selected) {
+                    Color.White.copy(alpha = 0.75f)
+                } else {
+                    TbMuted.copy(alpha = 0.7f)
+                },
+            )
         }
     }
 }

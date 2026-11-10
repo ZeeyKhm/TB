@@ -5,6 +5,10 @@
     <string name="loading_playlist">Loading playlist…</string>
     <string name="channels">Channels</string>
     <string name="channel_count">%1$d channels</string>
+    <string name="channel_count_split">%1$d TV · %2$d radio</string>
+    <string name="tv">TV</string>
+    <string name="radio">Radio</string>
+    <string name="no_channels_in_section">No channels in this section.</string>
     <string name="search_channels">Search channels</string>
     <string name="no_matches">No channels match “%1$s”</string>
     <string name="now_playing">Now playing</string>
