@@ -2,12 +2,6 @@
 
 #################### FTA ####################
 
-#EXTINF:-1 tvg-chno="114" tvg-id="TVAlHijrah.my" tvg-name="TVAlHijrah" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/my/TV_AlHijrah.png",TV AlHijrah
-#EXTGRP:Islamic/Local
-#EXTVLCOPT:network-caching=1000
-#EXTVLCOPT:http-user-agent=Mozilla/5.0
-#EXTVLCOPT:http-referrer=https://www.mana2.my/
-https://172048-castr.akamaized.net/61e0e9a88ecf869e0a595bfa/live_4613ff10825311eca6a5c102c9826f5e/index.m3u8
 #EXTINF:-1 tvg-chno="101" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
