@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>TB</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <video id="player" playsinline></video>
+
+  <div id="splash" class="splash">
+    <div class="logo">TB</div>
+    <div id="splashText" class="splash-text">Loading playlist…</div>
+  </div>
+
+  <aside id="panel" class="panel">
+    <header class="panel-head">
+      <div class="brand">TB</div>
+      <div class="meta">
+        <div id="count" class="count">—</div>
+        <div id="source" class="source">main playlist</div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button id="tabTv" class="tab active">TV <span id="tvCount">0</span></button>
+      <button id="tabRadio" class="tab">Radio <span id="radioCount">0</span></button>
+    </nav>
+
+    <div id="list" class="list"></div>
+
+    <footer class="hint">OK play · ◀ ▶ channel · INFO ×3 hidden</footer>
+  </aside>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="pin" class="overlay hidden">
+    <div class="pinbox">
+      <div id="pinTitle" class="pin-title">Hidden channels</div>
+      <div class="pin-sub">Enter PIN</div>
+      <div id="pinDots" class="dots"><i></i><i></i><i></i><i></i></div>
+      <div id="pinError" class="pin-error"></div>
+      <div class="pin-hint">Numbers to type · OK to confirm · BACK to cancel</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

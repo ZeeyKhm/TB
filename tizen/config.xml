@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://tbplayer.local"
+        version="1.1.0"
+        viewmodes="maximized">
+
+    <tizen:application id="tbplayer.tb" package="tbplayer" required_version="4.0"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/network.internet"/>
+
+    <name>TB</name>
+    <icon src="icon.png"/>
+    <description>M3U playlist player for Samsung TVs</description>
+
+    <access origin="*" subdomains="true"/>
+
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:profile name="tv-samsung"/>
+    <tizen:setting screen-orientation="landscape"
+                   context-menu="disable"
+                   background-support="disable"
+                   encryption="disable"
+                   hwkey-event="enable"/>
+</widget>

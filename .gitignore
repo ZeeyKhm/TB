@@ -17,4 +17,13 @@ captures/
 # Publish the installable builds in dist/.
 !dist/TB-debug.apk
 !dist/TB-release.apk
+!dist/TB.wgt
 !gradle/wrapper/gradle-wrapper.jar
+# Tizen build/signing leftovers
+tizen/.manifest.tmp
+tizen/.delta.lst
+tizen/author-signature.xml
+tizen/signature1.xml
+tizen/.build/
+tizen/.project
+tizen/.settings/

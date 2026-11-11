@@ -68,6 +68,8 @@ uninstall any previous TB install before switching between them.
 ```
 TB/
 ├── app/                     Android app (Kotlin + Compose + Media3)
+├── tizen/                   Samsung Tizen TV app (HTML/CSS/JS)
+├── dist/                    Ready-to-install APK, AAB and WGT builds
 ├── playlist/tb.m3u8         ← the playlist people edit on GitHub
 ├── .github/workflows/       builds a debug APK on every push
 └── README.md
@@ -177,6 +179,41 @@ adb install -r app\build\outputs\apk\release\app-release.apk
 
 Or copy the APK to the device and open it (allow "install unknown apps" for your
 file manager). On Android TV the app appears in the leanback launcher as **TB**.
+
+### Samsung Tizen TV (`.wgt`)
+
+Samsung TVs cannot install APKs, so `tizen/` is a separate web app with the same
+playlist, TV/Radio tabs and hidden-channel PIN. The signed package is
+`dist/TB.wgt`.
+
+1. On the TV, open **Apps**, then enter **Developer mode** (Apps → press `12345`
+   on the remote → Developer mode ON → enter your PC's IP → reboot the TV).
+2. Install the Tizen CLI/SDK on the PC, then connect:
+
+   ```bat
+   sdb connect <TV-IP>:26101
+   sdb devices
+   ```
+
+3. Install and launch:
+
+   ```bat
+   sdb install dist\TB.wgt
+   sdb shell 0 vd_appinstall TB tbplayer.tb
+   ```
+
+   Alternatively open **Tizen Studio → Device Manager → right-click the TV →
+   Install app**, and pick `dist/TB.wgt`.
+
+Remote controls match the Android app: **OK** plays the focused channel,
+**◀ ▶** zaps, **▲ ▼** moves the list, **INFO** three times opens the PIN prompt
+(hidden playlists, PIN `1234`).
+
+Re-package after editing `tizen/`:
+
+```bat
+tizen package -t wgt -s <your-cert-profile> -o "%CD%\dist" -- "%CD%\tizen"
+```
 
 ## GitHub setup (first time)
 
