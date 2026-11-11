@@ -7,6 +7,7 @@
 #EXTVLCOPT:network-caching=1000
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 #EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+#TB-IFRAME:https://www.rtbgo.bn/live?target=2
 https://d1211whpimeups.cloudfront.net/smil:rtb1/playlist.m3u8?id=2
 #EXTINF:-1 tvg-chno="102" tvg-id="RTBAneka.bn" tvg-name="RTBAneka" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Aneka.png",RTB Aneka
 #EXTGRP:Family/Kids

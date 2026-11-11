@@ -13,6 +13,7 @@
   var HIDDEN_CACHE_KEY = 'tb.hidden.v1';
 
   var player = document.getElementById('player');
+  var frameEl = document.getElementById('playerFrame');
   var splash = document.getElementById('splash');
   var splashText = document.getElementById('splashText');
   var panel = document.getElementById('panel');
@@ -41,6 +42,8 @@
   var hls = null;
   var triedHls = false;
   var avplayTried = false;
+  var playSeq = 0;
+  var frameMode = false;
   var toastTimer = null;
 
   var infoClicks = 0;
@@ -85,12 +88,20 @@
     var out = [];
     var cur = null;
     var section = '';
+    var referrer = '';
+    var frameUrl = '';
 
     text.split(/\r?\n/).forEach(function (raw) {
       var line = raw.trim();
       if (!line) return;
 
       if (line.charAt(0) === '#') {
+        var ref = /^#EXTVLCOPT:http-referrer=(.+)$/i.exec(line);
+        if (ref) { referrer = ref[1].trim(); return; }
+
+        var frame = /^#TB-IFRAME:\s*(.+)$/i.exec(line);
+        if (frame) { frameUrl = frame[1].trim(); return; }
+
         var marker = /^#{4,}\s*(.+?)\s*#{4,}$/.exec(line);
         if (marker) { section = marker[1].toUpperCase(); return; }
 
@@ -104,14 +115,35 @@
             url: null,
             group: group ? group[1] : '',
             section: section || 'CHANNELS',
-            radio: false
+            radio: false,
+            referrer: referrer,
+            frame: frameUrl
           };
+          referrer = '';
+          frameUrl = '';
           out.push(cur);
         }
         return;
       }
 
-      if (cur && !cur.url) cur.url = line;
+      if (cur && !cur.url) {
+        var bar = line.indexOf('|');
+        cur.url = bar >= 0 ? line.slice(0, bar) : line;
+        if (referrer && !cur.referrer) cur.referrer = referrer;
+        if (frameUrl) cur.frame = frameUrl;
+        referrer = '';
+        frameUrl = '';
+        if (bar >= 0) {
+          line.slice(bar + 1).split('|').forEach(function (part) {
+            var eq = part.indexOf('=');
+            if (eq <= 0) return;
+            var key = part.slice(0, eq).toLowerCase();
+            var value = part.slice(eq + 1);
+            if (key === 'referer' || key === 'referrer') cur.referrer = value;
+            if (key === 'user-agent') cur.userAgent = value;
+          });
+        }
+      }
     });
 
     return out.filter(function (c) { return !!c.url; }).map(function (c) {
@@ -124,6 +156,30 @@
     return fetch(url, { cache: 'no-store' }).then(function (response) {
       if (!response.ok) throw new Error('HTTP ' + response.status);
       return response.text();
+    });
+  }
+
+  /* Some playlist URLs are short API links that redirect (307) to the real
+     manifest. Resolve them first: neither AVPlay nor <video> reliably follows
+     those redirects. Falls back to the original URL on any failure. */
+  function resolveMediaUrl(url, done) {
+    if (/\.(m3u8|mpd|mp4|m4v|ts|aac|mp3)(\?|$)/i.test(url)) { done(url); return; }
+    var settled = false;
+    var timer = setTimeout(function () {
+      if (settled) return;
+      settled = true;
+      done(url);
+    }, 4000);
+    fetch(url, { cache: 'no-store' }).then(function (response) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      done(response && response.url ? response.url : url);
+    }).catch(function () {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      done(url);
     });
   }
 
@@ -238,6 +294,8 @@
      rejects: raw MPEG-TS and DASH (.mpd). It is only used after the
      <video> element fails, so normal HLS playback is unchanged. */
   var avplayActive = false;
+  var avplayToken = 0;
+  var diagOpen = false;
 
   function avplayApi() {
     try {
@@ -248,12 +306,35 @@
 
   function stopAvplay() {
     var api = avplayApi();
+    avplayToken++;               /* invalidate callbacks from the old player */
     if (player.dataset) player.dataset.avpaused = '0';
     if (!avplayActive) return;
     avplayActive = false;
     if (!api) return;
     try { api.stop(); } catch (e) { /* ignore */ }
     try { api.close(); } catch (e) { /* ignore */ }
+  }
+
+  function playbackError(channel, err, api) {
+    var state = '?';
+    try { if (api && api.getState) state = String(api.getState()); } catch (e) { /* ignore */ }
+    var reason = err ? ((err.name || 'error') + (err.message ? ': ' + err.message : '')) : 'no details';
+    var lines = [
+      'Could not play ' + channel.name + '.',
+      '',
+      'URL: ' + String(channel.url).split('|')[0],
+      'Reason: ' + reason,
+      'AVPlay state: ' + state
+    ];
+    if (channel.referrer) {
+      lines.push('', 'This channel needs the broadcaster\'s referrer header, ' +
+        'which the TV cannot send. It only plays in the broadcaster\'s own app.');
+    }
+    lines.push('', 'Press OK to continue.');
+    splashText.textContent = lines.join('\n');
+    splash.className = 'splash';
+    diagOpen = true;
+    toast('Could not play ' + channel.name, true);
   }
 
   function setAvplayVisible(visible) {
@@ -269,35 +350,44 @@
     var api = avplayApi();
     if (!api) return false;
     stopAvplay();
+    var token = avplayToken;
+    var url = String(channel.url).split('|')[0];
+
+    function alive() { return token === avplayToken; }
+
     try {
       player.pause();
       player.removeAttribute('src');
       player.load();
     } catch (e) { /* ignore */ }
 
-    function fail() {
-      stopAvplay();
-      toast('Could not play ' + channel.name + ' - this stream uses a format ' +
-        'the TV cannot decode (raw MPEG-TS or DASH)', true);
+    function fail(err) {
+      if (!alive()) return;        /* stale event from a player we already closed */
+      avplayToken++;
+      avplayActive = false;
+      try { api.stop(); } catch (e) { /* ignore */ }
+      try { api.close(); } catch (e) { /* ignore */ }
+      playbackError(channel, err, api);
     }
 
     try {
-      api.open(channel.url);
+      api.open(url);
       api.setDisplayRect(0, 0, window.innerWidth, window.innerHeight);
       if (player.dataset) player.dataset.avpaused = '0';
       api.setListener({
         onerror: fail,
-        onstreamcompleted: function () { stopAvplay(); },
+        onstreamcompleted: function () { if (alive()) stopAvplay(); },
         onbufferingstart: function () { },
         onbufferingcomplete: function () { }
       });
       avplayActive = true;
       api.prepareAsync(function () {
+        if (!alive()) return;
         try {
           api.play();
           splash.className = 'splash hidden';
           toast('Playing ' + channel.name);
-        } catch (e) { fail(); }
+        } catch (e) { fail(e); }
       }, fail);
       return true;
     } catch (e) {
@@ -308,9 +398,11 @@
 
   function playChannel(channel) {
     if (!channel) return;
+    var seq = ++playSeq;
     current = channel;
     triedHls = false;
     avplayTried = false;
+    diagOpen = false;
     splash.className = 'splash hidden';
     if (hls) { hls.destroy(); hls = null; }
     stopAvplay();
@@ -321,11 +413,36 @@
       player.load();
     } catch (e) { /* ignore */ }
 
-    player.src = channel.url;
-    var promise = player.play();
-    if (promise && promise.catch) promise.catch(function () {});
+    /* Some broadcasters lock their CDN to their own web player (Referer
+       header). Those channels point at the broadcaster's player page, which
+       runs in this iframe with the right context. */
+    if (channel.frame && IS_TIZEN) {
+      stopFrame();
+      frameEl.src = channel.frame;
+      frameEl.style.display = 'block';
+      frameMode = true;
+      render();
+      toast('Playing ' + channel.name);
+      return;
+    }
+    stopFrame();
+
     render();
     toast('Playing ' + channel.name);
+
+    resolveMediaUrl(channel.url, function (url) {
+      if (seq !== playSeq) return;
+      player.src = url;
+      var promise = player.play();
+      if (promise && promise.catch) promise.catch(function () {});
+    });
+  }
+
+  function stopFrame() {
+    if (!frameMode) return;
+    frameMode = false;
+    frameEl.style.display = 'none';
+    frameEl.src = 'about:blank';
   }
 
   function zap(delta) {
@@ -341,6 +458,8 @@
 
   player.addEventListener('error', function () {
     if (!current) return;
+    var mediaErr = player.error;
+    if (!mediaErr) return;   /* error event fired while switching sources */
     var isHls = /\.m3u8(\?|$)/i.test(current.url);
     if (IS_TIZEN && !avplayTried) {
       /* The TV's HTML5 player rejected the container: retry natively. */
@@ -353,7 +472,7 @@
       startHls(current.url);
       return;
     }
-    toast('Could not play ' + current.name + ' (stream offline or blocked)', true);
+    toast('Could not play ' + current.name + ' (media error ' + mediaErr.code + ')', true);
   });
 
   player.addEventListener('playing', function () {
@@ -460,6 +579,7 @@
     tab = 'tv';
     current = null;
     stopAvplay();
+    stopFrame();
     try { player.pause(); player.removeAttribute('src'); player.load(); } catch (e) { /* ignore */ }
     render();
     if (message) toast(message);
@@ -480,6 +600,13 @@
   /* ------------------------------------------------------------ keys */
   function onKey(event) {
     var code = event.keyCode;
+
+    if (diagOpen) {
+      diagOpen = false;
+      splash.className = 'splash hidden';
+      event.preventDefault();
+      return;
+    }
 
     if (pinOpen) {
       if (code >= 48 && code <= 57) { addPinDigit(String.fromCharCode(code)); }
@@ -516,6 +643,7 @@
         break;
       case 415:
       case 10252:
+        if (frameMode) return;
         var avplay = avplayApi();
         if (avplayActive && avplay) {
           try {
@@ -559,10 +687,9 @@
       mainChannels = parsed;
       hiddenMode = false;
       current = null;
-      splashText.textContent = 'Ready';
+      splash.className = 'splash hidden';
       render();
-      var items = filtered();
-      if (items.length) playChannel(items[0]);
+      toast('Ready — press OK to play');
     }).catch(function (error) {
       bootFailed = true;
       splashText.textContent = 'Could not load the playlist (' + error.message +

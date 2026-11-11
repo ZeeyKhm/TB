@@ -242,9 +242,16 @@ token, and this app intentionally does not embed credentials.
 
 - HLS (`.m3u8`), DASH (`.mpd`) and progressive MP4/WebM are supported; raw
   MPEG-TS and RTMP streams are not.
-- The Tizen web app plays HLS with the TV's built-in player and falls back to
-  Samsung AVPlay for raw MPEG-TS and DASH. A channel the TV still cannot decode
-  shows a "format the TV cannot decode" message instead of failing silently.
+- The Tizen web app plays HLS and DASH with the TV's built-in player and
+  retries with Samsung AVPlay (which also handles raw MPEG-TS) when the built-in
+  player rejects a stream. Short API links that redirect to a manifest are
+  resolved before playback. If a channel still fails, the app shows the URL, the
+  AVPlay state and the player's error instead of a generic message.
+- `#TB-IFRAME:<url>` makes the Tizen app play that channel inside the
+  broadcaster's own web player. It is used for RTB, whose CDN only serves
+  requests that carry the `rtbgo.bn` referrer, which a TV app cannot set.
+- Referer-locked channels without a `#TB-IFRAME:` page can only play in the
+  broadcaster's own app; the Tizen app says so instead of failing silently.
 - Widevine (`com.widevine.alpha`) and ClearKey (`org.w3.clearkey`) DRM are read
   from `#KODIPROP` lines. Widevine needs a licence server in the playlist and a
   device that supports Widevine (most Play-certified phones do).
@@ -252,7 +259,8 @@ token, and this app intentionally does not embed credentials.
   `|User-Agent=` URL suffixes are applied to that channel's requests.
 - No EPG, favorites, resume position or picture-in-picture yet.
 - Always opens the first channel on a cold launch, by design, using the playlist
-  URL compiled into the app.
+  URL compiled into the app. The Tizen app instead starts on the channel list and
+  waits for OK, so a dead first entry is not shown as an error at launch.
 - The activity is locked to landscape (`sensorLandscape`), so it flips between
   the two landscape sides but never shows portrait.
 - Release builds are signed with the keystore in `keystore/` and its passwords in
