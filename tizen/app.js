@@ -40,6 +40,7 @@
   var bootFailed = false;
   var hls = null;
   var triedHls = false;
+  var avplayTried = false;
   var toastTimer = null;
 
   var infoClicks = 0;
@@ -232,23 +233,93 @@
     });
   }
 
-  function playChannel(channel) {
-    if (!channel) return;
-    current = channel;
-    triedHls = false;
-    splash.className = 'splash hidden';
-    if (hls) { hls.destroy(); hls = null; }
+  /* ------------------------------------------------------------ AVPlay
+     Samsung's native engine handles containers the HTML5 <video> element
+     rejects: raw MPEG-TS and DASH (.mpd). It is only used after the
+     <video> element fails, so normal HLS playback is unchanged. */
+  var avplayActive = false;
 
+  function avplayApi() {
+    try {
+      if (window.webapis && window.webapis.avplay) return window.webapis.avplay;
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+
+  function stopAvplay() {
+    var api = avplayApi();
+    if (player.dataset) player.dataset.avpaused = '0';
+    if (!avplayActive) return;
+    avplayActive = false;
+    if (!api) return;
+    try { api.stop(); } catch (e) { /* ignore */ }
+    try { api.close(); } catch (e) { /* ignore */ }
+  }
+
+  function setAvplayVisible(visible) {
+    var api = avplayApi();
+    if (!api || !avplayActive) return;
+    try {
+      if (visible) api.setDisplayRect(0, 0, window.innerWidth, window.innerHeight);
+      else api.setDisplayRect(0, 0, 1, 1);
+    } catch (e) { /* ignore */ }
+  }
+
+  function startAvplay(channel) {
+    var api = avplayApi();
+    if (!api) return false;
+    stopAvplay();
     try {
       player.pause();
       player.removeAttribute('src');
       player.load();
     } catch (e) { /* ignore */ }
 
-    if (/\.mpd(\?|$)/i.test(channel.url)) {
-      toast('DASH streams are not supported by this TV', true);
-      return;
+    function fail() {
+      stopAvplay();
+      toast('Could not play ' + channel.name + ' - this stream uses a format ' +
+        'the TV cannot decode (raw MPEG-TS or DASH)', true);
     }
+
+    try {
+      api.open(channel.url);
+      api.setDisplayRect(0, 0, window.innerWidth, window.innerHeight);
+      if (player.dataset) player.dataset.avpaused = '0';
+      api.setListener({
+        onerror: fail,
+        onstreamcompleted: function () { stopAvplay(); },
+        onbufferingstart: function () { },
+        onbufferingcomplete: function () { }
+      });
+      avplayActive = true;
+      api.prepareAsync(function () {
+        try {
+          api.play();
+          splash.className = 'splash hidden';
+          toast('Playing ' + channel.name);
+        } catch (e) { fail(); }
+      }, fail);
+      return true;
+    } catch (e) {
+      avplayActive = false;
+      return false;
+    }
+  }
+
+  function playChannel(channel) {
+    if (!channel) return;
+    current = channel;
+    triedHls = false;
+    avplayTried = false;
+    splash.className = 'splash hidden';
+    if (hls) { hls.destroy(); hls = null; }
+    stopAvplay();
+
+    try {
+      player.pause();
+      player.removeAttribute('src');
+      player.load();
+    } catch (e) { /* ignore */ }
 
     player.src = channel.url;
     var promise = player.play();
@@ -271,6 +342,11 @@
   player.addEventListener('error', function () {
     if (!current) return;
     var isHls = /\.m3u8(\?|$)/i.test(current.url);
+    if (IS_TIZEN && !avplayTried) {
+      /* The TV's HTML5 player rejected the container: retry natively. */
+      avplayTried = true;
+      if (startAvplay(current)) return;
+    }
     if (isHls && !NATIVE_HLS && !IS_TIZEN && !triedHls) {
       /* Browser without native HLS: try hls.js. TV browsers never get here. */
       triedHls = true;
@@ -303,11 +379,13 @@
     pinError.textContent = '';
     updatePinDots();
     pinEl.className = 'overlay';
+    setAvplayVisible(false);
   }
 
   function closePin() {
     pinOpen = false;
     pinEl.className = 'overlay hidden';
+    setAvplayVisible(true);
   }
 
   function updatePinDots() {
@@ -381,6 +459,7 @@
     focusRadio = 0;
     tab = 'tv';
     current = null;
+    stopAvplay();
     try { player.pause(); player.removeAttribute('src'); player.load(); } catch (e) { /* ignore */ }
     render();
     if (message) toast(message);
@@ -418,21 +497,39 @@
       case 39: zap(1); break;
       case 13:
         if (bootFailed) { boot(); return; }
-        if (!panelOpen) { panelOpen = true; panel.className = 'panel'; return; }
+        if (!panelOpen) {
+          panelOpen = true;
+          panel.className = 'panel';
+          setAvplayVisible(true);
+          return;
+        }
         playChannel(filtered()[focusIndex()]);
         break;
       case 10009:
       case 27:
         panelOpen = !panelOpen;
         panel.className = 'panel' + (panelOpen ? '' : ' hidden');
+        setAvplayVisible(!panelOpen);
         break;
       case 457:
         noteInfoClick();
         break;
       case 415:
       case 10252:
-        if (player.paused) { player.play(); toast('Resume'); }
-        else { player.pause(); toast('Paused'); }
+        var avplay = avplayApi();
+        if (avplayActive && avplay) {
+          try {
+            if (player.dataset.avpaused === '1') {
+              avplay.play(); player.dataset.avpaused = '0'; toast('Resume');
+            } else {
+              avplay.pause(); player.dataset.avpaused = '1'; toast('Paused');
+            }
+          } catch (e) { /* ignore */ }
+        } else if (player.paused) {
+          player.play(); toast('Resume');
+        } else {
+          player.pause(); toast('Paused');
+        }
         break;
       default:
         return;

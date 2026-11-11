@@ -1,8 +1,14 @@
-#EXTM3U x-tvg-url="https://cutt.ly/FreemediaMY-EPG-1,https://cutt.ly/FreemediaMY-EPG-2" refresh="24"
+﻿#EXTM3U x-tvg-url="https://cutt.ly/FreemediaMY-EPG-1,https://cutt.ly/FreemediaMY-EPG-2" refresh="24"
 
 #################### RTB ####################
 
 #EXTINF:-1 tvg-chno="101" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
+#EXTGRP:Family/Kids
+#EXTVLCOPT:network-caching=1000
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
+#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
+https://d1211whpimeups.cloudfront.net/smil:rtb1/playlist.m3u8?id=2
+#EXTINF:-1 tvg-chno="102" tvg-id="RTBAneka.bn" tvg-name="RTBAneka" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Aneka.png",RTB Aneka
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
@@ -489,7 +495,7 @@ http://202.150.172.59/VTVHD/index.m3u8
 #EXTINF:-1 tvg-chno="923" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/988fm.png",988 FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/988_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/988_FMAAC.aac
 #EXTINF:-1 tvg-chno="924" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/BestFM.png",Best FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
@@ -497,7 +503,7 @@ https://stream.rcs.revma.com/h34x4kgg9hhvv
 #EXTINF:-1 tvg-chno="925" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/BFM89.9.png",BFM 89.9
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/BFMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/BFMAAC.aac
 #EXTINF:36,DG:Radio (1080p)
 https://mdn.dg.church/683c0cb036885-1/index.m3u8
 #EXTINF:-1 tvg-chno="909" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-eightfm.png",Eight FM (Media Prima Audio)
@@ -563,27 +569,27 @@ https://stream.rcs.revma.com/1ut6qwtbv4uvv
 #EXTINF:-1 tvg-chno="903" tvg-id="AI FM" tvg-name="AI FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AiFM.png",RTM Radio Ai
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC.aac
 #EXTINF:-1 tvg-chno="906" tvg-id="Asyik FM" tvg-name="Asyik FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AsyikFM.png",RTM Radio Asyik / RTM Radio Salam
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FMAAC.aac
 #EXTINF:-1 tvg-chno="905" tvg-id="Radio Klasik" tvg-name="Radio Klasik" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-RadioKlasik.png",RTM Radio Klasik
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC.aac
 #EXTINF:-1 tvg-chno="904" tvg-id="Minnal FM" tvg-name="Minnal FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-MinnalFM.png",RTM Radio Minnal
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC.aac
 #EXTINF:-1 tvg-chno="901" tvg-id="Nasional FM" tvg-name="Nasional FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-NasionalFM.png",RTM Radio Nasional
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FMAAC.aac
 #EXTINF:-1 tvg-chno="902" tvg-id="Traxx FM" tvg-name="Traxx FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-TraxxFM.png",RTM Radio Traxx
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC.aac
 #EXTINF:-1 tvg-chno="916" tvg-id="SINAR" tvg-name="SINAR" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/sinar.png",Sinar (Astro Radio)
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
@@ -591,7 +597,7 @@ https://stream.rcs.revma.com/azatk0tbv4uvv
 #EXTINF:-1 tvg-chno="927" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/suriafm.png",Suria FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC
+https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC.aac
 #EXTINF:-1 tvg-chno="917" tvg-id="ZAYAN" tvg-name="ZAYAN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/zayan.png",Zayan (Astro Radio)
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000

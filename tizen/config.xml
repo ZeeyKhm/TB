@@ -16,6 +16,7 @@
     <access origin="*" subdomains="true"/>
 
     <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/avplay"/>
     <tizen:profile name="tv-samsung"/>
     <tizen:setting screen-orientation="landscape"
                    context-menu="disable"
