@@ -121,10 +121,7 @@
   }
 
   function fetchText(url) {
-    return fetch(url, {
-      cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
-    }).then(function (response) {
+    return fetch(url, { cache: 'no-store' }).then(function (response) {
       if (!response.ok) throw new Error('HTTP ' + response.status);
       return response.text();
     });
