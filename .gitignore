@@ -14,4 +14,7 @@ captures/
 .cxx/
 *.apk
 *.aab
+# Publish the installable builds in dist/.
+!dist/TB-debug.apk
+!dist/TB-release.apk
 !gradle/wrapper/gradle-wrapper.jar
