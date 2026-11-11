@@ -2,6 +2,10 @@
 
 A small Android player for an M3U/M3U8 playlist hosted on GitHub.
 
+> **Disclaimer:** TB is a playlist player. It hosts no channels, is not
+> affiliated with any broadcaster, and provides no content of its own. See
+> [DISCLAIMER.md](DISCLAIMER.md).
+
 Open the app and it starts playing the **first channel** in the playlist. Tap
 anywhere on the video (or press **OK** on a TV remote) and the **channel list**
 slides in from the left. Pick another channel and it starts immediately.
@@ -215,6 +219,17 @@ token, and this app intentionally does not embed credentials.
 
 ## Legal
 
-This project ships **no channels**. The playlist you load is your
-responsibility: make sure you have the rights to watch and redistribute those
-streams.
+**TB ships no channels and hosts no streams.** It is a player for playlist files.
+
+This project is not affiliated with any broadcaster, and all channel names and
+logos belong to their owners. Streams come from third-party URLs written in a
+playlist; their legality and availability vary by country, and some may be
+geo-restricted. You are responsible for having the right to watch what you play
+and for following the law where you live. Personal, lawful use only.
+
+Read the full [DISCLAIMER](DISCLAIMER.md) — it covers content ownership,
+affiliation, takedown requests and liability.
+
+Rightsholder takedown requests: open an issue at
+<https://github.com/ZeeyKhm/TB/issues> with the exact URL; entries are removed
+promptly.
