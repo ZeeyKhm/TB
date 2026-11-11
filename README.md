@@ -238,6 +238,9 @@ token, and this app intentionally does not embed credentials.
 
 - HLS (`.m3u8`), DASH (`.mpd`) and progressive MP4/WebM are supported; raw
   MPEG-TS and RTMP streams are not.
+- The Tizen web app plays HLS with the TV's built-in player and falls back to
+  Samsung AVPlay for raw MPEG-TS and DASH. A channel the TV still cannot decode
+  shows a "format the TV cannot decode" message instead of failing silently.
 - Widevine (`com.widevine.alpha`) and ClearKey (`org.w3.clearkey`) DRM are read
   from `#KODIPROP` lines. Widevine needs a licence server in the playlist and a
   device that supports Widevine (most Play-certified phones do).
