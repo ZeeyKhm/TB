@@ -5,7 +5,7 @@
         version="1.1.0"
         viewmodes="maximized">
 
-    <tizen:application id="tbplayer.tb" package="tbplayer" required_version="4.0"/>
+    <tizen:application id="tbplayer01.tb" package="tbplayer01" required_version="4.0"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/network.internet"/>
 

@@ -195,12 +195,16 @@ playlist, TV/Radio tabs and hidden-channel PIN. The signed package is
    sdb devices
    ```
 
-3. Install and launch:
+3. Install and launch (use the TV name from `sdb devices`):
 
    ```bat
-   sdb install dist\TB.wgt
-   sdb shell 0 vd_appinstall TB tbplayer.tb
+   tizen install -n dist\TB.wgt -t <TV model name>
+   sdb shell 0 was_execute tbplayer01.tb
    ```
+
+   For example `-t UA65AU7000KXXM`. The package ID is `tbplayer01` — Samsung
+   TVs reject package IDs that are not exactly 10 characters, so keep it at
+   10 if you rename the app.
 
    Alternatively open **Tizen Studio → Device Manager → right-click the TV →
    Install app**, and pick `dist/TB.wgt`.
