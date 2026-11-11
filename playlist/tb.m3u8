@@ -1,7 +1,6 @@
 #EXTM3U x-tvg-url="https://cutt.ly/FreemediaMY-EPG-1,https://cutt.ly/FreemediaMY-EPG-2" refresh="24"
 
-
-#################### FTA ####################
+#################### RTB ####################
 
 #EXTINF:-1 tvg-chno="101" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
 #EXTGRP:Family/Kids
@@ -9,12 +8,13 @@
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 #EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
 https://d2ychbs6cqpbif.cloudfront.net/smil:rtb2/playlist.m3u8?id=3391
-#EXTINF:-1 tvg-chno="102" tvg-id="RTBSukmaindera.bn" tvg-name="RTBSukmaindera" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RTB_Sukmaindera.png",RTB Sukmaindera
-#EXTGRP:Family/Kids
+
+#################### MALAYSIA ####################
+
+#EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
+#EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
-#EXTVLCOPT:http-user-agent=Mozilla/5.0
-#EXTVLCOPT:http-referrer=https://www.rtbgo.bn/
-https://d1211whpimeups.cloudfront.net/smil:rtb1/playlist.m3u8?id=2
+https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
 #EXTINF:-1 tvg-chno="101" tvg-id="TV1" tvg-name="TV1" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/RTM1.png",RTM 1
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
@@ -27,40 +27,184 @@ https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/index.m3u8?id=2
 #EXTGRP:Family/Kids
 #EXTVLCOPT:network-caching=1000
 https://d25tgymtnqzu8s.cloudfront.net/smil:okey/index.m3u8?id=3
-#EXTINF:-1 tvg-chno="105" tvg-id="Berita RTM" tvg-name="Berita RTM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/local/Berita_RTM.png",Berita RTM
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://d25tgymtnqzu8s.cloudfront.net/smil:berita/index.m3u8?id=5
 
-#################### NEWS/WORLD/DOCUMENTARY ####################
+#################### SINGAPORE ####################
 
+#EXTINF:48,Channel 5 (Singapore) (720p)
+https://cdn.qd.je/163189/ch5
+#EXTINF:48,Channel 8 (Singapore) (720p)
+https://cdn.qd.je/163189/ch8
+#EXTINF:48,Channel U (720p)
+https://cdn.qd.je/163189/chu
+#EXTINF:30,CNA International (1080p)
+https://freem3u.xyz/api/live/play.m3u8?vid=112
+#EXTINF:60,CNA Originals (1080p)
+https://amg01082-cna-amg01082c1-rlaxx-us-11304.playouts.now.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-chno="601" tvg-id="CNA" tvg-name="CNA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/CNA.png",CNA Singapore
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index.m3u8
-#EXTINF:-1 tvg-chno="602" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/TVRIWorld.png",TVRI World
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/index.m3u8|Referer=https://klik.tvri.co.id/
+#EXTINF:48,meWATCH LIVE 1 (1080p)
+https://tglmp04.akamaized.net/out/v1/898b1cbac7c747e3b1f3deb460e9b67e/manifest.mpd
+
+#################### KOREA ####################
+
 #EXTINF:-1 tvg-chno="606" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/ArirangTV.png",Arirang TV
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/index.m3u8
-#EXTINF:-1 tvg-chno="607" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/TRTWorld.png",TRT World
-#EXTGRP:News/World
-#EXTVLCOPT:network-caching=1000
-https://tv-trtworld.medya.trt.com.tr/master.m3u8
+#EXTINF:36,KBS World HD
+#EXTVLCOPT:http-referrer=https://cinerama.uz/
+https://stream8.cinerama.uz/1448/playlist.m3u8
+#EXTINF:48,Korean Central Television (1080p) [Not 24/7]
+https://live.koryocdn.org/kctv/index.m3u8
+
+#################### JAPAN ####################
+
+#EXTINF:35,NHK World Premium (720p)
+https://media-tyo.hls.nhkworld.jp/hls/wp/live/master.m3u8
+#EXTINF:20,NHK World-Japan (1080p)
+https://cdn.pishow.tv/ott/live/455/master.m3u8
+
+#################### NEWS/WORLD ####################
+
+#EXTINF:60,Bloomberg TV + (2160p)
+https://d8975dc3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9CbG9vbWJlcmdUVlBsdXNfSExT/playlist.m3u8
+#EXTINF:48,Bloomberg TV Asia (720p)
+https://bloomberg.com/media-manifest/streams/asia.m3u8
+#EXTINF:50,Bloomberg TV Asia Live Event (720p)
+https://bloomberg.com/media-manifest/streams/asia-event.m3u8
+#EXTINF:60,CGTN (1080p)
+https://amg00405-rakutentv-cgtn-rakuten-i9tar.amagi.tv/master.m3u8
+#EXTINF:60,CGTN Documentary (1080p)
+https://amg00405-rakutentv-cgtndocumentary-rakuten-0ql8j.amagi.tv/master.m3u8
+#EXTINF:60,CGTN Global Biz (1080p)
+https://fastlive.cctvplus.com/out/v1/2b3d8a0c805d437f9dc85b764c2ac599/index.m3u8
+#EXTINF:30,CNBC Asia HD (1080p)
+https://freem3u.xyz/api/live/play.m3u8?vid=9855
+#EXTINF:60,DW English (1080p)
+https://amg01644-amg01644c1-amgplt0343.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg01644-amg01644c1-amgplt0343/playlist.m3u8
 #EXTINF:-1 tvg-chno="609" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/DWNews.png",DW News
 #EXTGRP:News/World
 #EXTVLCOPT:network-caching=1000
 https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8
+#EXTINF:30,EAC News TV
+https://live.eac-news.com/LiveApp/streams/eacnews.m3u8
+#EXTINF:49,Euronews English HD
+https://dash4.antik.sk/live/test_euronews/playlist.m3u8
+#EXTINF:60,i24NEWS English World (1080p)
+https://hlspackager.akamaized.net/live/DB/i24_ENGLISH/HLS/i24_ENGLISH.m3u8
+#EXTINF:30,NTD TV Asia-Pacific
+https://live.ntdtv.com/aplive200/playlist.m3u8
+#EXTINF:30,SMNI (720p)
+https://stream.kdlc.click/hls/0/stream.m3u8
+#EXTINF:20,TOI Global (1080p)
+https://live.sli.ke/live/npnhm84gz9/master.m3u8
+#EXTINF:49,TRT World HD
+https://dash2.antik.sk/live/test_trt_world_atktv/playlist.m3u8
+#EXTINF:30,UN Web TV (540p)
+https://cdnapi.kaltura.com/p/2503451/sp/250345100/playManifest/entryId/1_gb6tjmle/protocol/https/format/applehttp/a.m3u8
 
-#################### INTERNATIONAL SPORTS ####################
+#################### SPORTS ####################
 
-#EXTINF:-1 tvg-chno="702" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RedBullTV.png",Red Bull TV
-#EXTGRP:Sports
-#EXTVLCOPT:network-caching=1000
+#EXTINF:49,Fast&FunBox
+https://dash3.antik.sk/live/test_fast_and_funbox_medium_atk/playlist.m3u8
+#EXTINF:300,FightBox HD
+https://nosignal1.antenaplay.ro/hls/fightbox-hd/index.m3u8
+#EXTINF:60,FUEL TV AU (1080p)
+https://amg01074-fueltv-fueltvau-samsungau-g09kq.amagi.tv/playlist/amg01074-fueltv-fueltvau-samsungau/playlist.m3u8
+#EXTINF:30,HTV Sports (1080i)
+https://vmttv.dpdns.org/tv360?id=htv-the-thao
+#EXTINF:60,Motorvision (1080i)
+https://mvg-mv.otteravision.com/mvg/mv/mv_1080p.m3u8
+#EXTINF:60,Racer Select (1080p)
+https://amg00378-amg00378c4-freelivesports-emea-5637.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:180 tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/RedBullTV.png" tvg-chno="702",Red Bull TV (1080p)
 https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
+
+#################### CARTOONS ####################
+
+#EXTINF:-1 group-title="Animation;Kids",Cartoon Network Asia (720p)
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+https://cdn4.skygo.mn/live/disk1/Cartoon_Network/HLSv3-FTA/Cartoon_Network.m3u8
+#EXTINF:-1 group-title="Animation;Kids",Cartoonito Asia (720p)
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+http://cdn4.skygo.mn/live/disk1/Boomerang/HLSv3-FTA/Boomerang.m3u8
+#EXTINF:36,Kids TV
+#EXTVLCOPT:network-caching=1000
+http://origin5.mediacdn.ru/live/kidstv/index.m3u8
+#EXTINF:-1 group-title="Kids",Nick Jr.
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+http://103.253.74.210:7070/stream/116/index.m3u8
+#EXTINF:-1 group-title="Kids",Nickelodeon
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+http://103.253.74.210:7070/stream/117/index.m3u8
+#EXTINF:60,ZooMoo (1080p)
+https://zoomoo-samsungau.amagi.tv/playlist.m3u8
+
+#################### MOVIES ####################
+
+#EXTINF:86,AXN HD
+http://202.150.165.66:8088/play/301-AXN/index.m3u8
+#EXTINF:86,CINEMAX
+http://202.150.165.66:8088/play/104-Cinemax/index.m3u8
+#EXTINF:300,FILMBOX+ Festival HD (1080p)
+https://nosignal1.antenaplay.ro/hls/fb-festival-hd/index.m3u8
+#EXTINF:86,HBO Family HD
+http://202.150.165.66:8088/play/103-HBOFamily/index.m3u8
+#EXTINF:86,HBO HD
+http://202.150.165.66:8088/play/100-HBO/index.m3u8
+#EXTINF:86,HBO Hits HD
+http://202.150.165.66:8088/play/102-HBOHits/index.m3u8
+#EXTINF:86,HBO Signature HD
+http://202.150.165.66:8088/play/101-HBOSignature/index.m3u8
+#EXTINF:-1 group-title="Movies",Warner TV Asia (720p)
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+https://cdn4.skygo.mn/live/disk1/Warner/HLSv3-FTA/Warner.m3u8
+
+#################### ENTERTAINMENT ####################
+
+#EXTINF:60,China Travel (1080p)
+https://fastlive.cctvplus.com/out/v1/ca6f9297b7314a63959435028af287fc/index.m3u8
+#EXTINF:36,DG:TV (1080p)
+https://mdn.dg.church/673ac57a073a4-1/index.m3u8
+#EXTINF:60,Discovering China (1080p)
+https://fastlive.cctvplus.com/out/v1/8442c3bfd4c64a3984389328f6087879/index.m3u8
+#EXTINF:50,DocuBox
+https://dash3.antik.sk/live/test_docubox_medium_atk/playlist.m3u8
+#EXTINF:60,DroneTV (1080p)
+https://airvuz-dronetv-1-us.ohlscdn.wurl.tv/playlist.m3u8
+#EXTINF:30,Euro Indie Music Chart TV (360p)
+http://178.33.224.197:1935/euroindiemusic/euroindiemusic/playlist.m3u8
+#EXTINF:100,EWTN (United States) Asia-Pacific (720p)
+https://cdn3.wowza.com/1/QmVNUVhTNTZSS3Uz/YWQ0aHpi/hls/live/playlist.m3u8
+#EXTINF:50,FashionBox
+https://dash2.antik.sk/live/test_fashionbox_medium_atk/playlist.m3u8
+#EXTINF:128,GOD TV Asia (576p)
+https://d1msejlow1t3l4.cloudfront.net/211125/godtv/playlist.m3u8
+#EXTINF:32,HGTV Asia (1080p)
+https://freem3u.xyz/api/live/play.m3u8?vid=99
+#EXTINF:32,History Asia (720p)
+https://freem3u.xyz/api/live/play.m3u8?vid=9856
+#EXTINF:54,INTRAVEL (1080p)
+https://amg00861-amg00861c10-rakuten-uk-3152.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:60,INWILD (1080p)
+https://amg00861-terninternation-inwild-samsunguk-w5wic.amagi.tv/playlist/amg00861-terninternation-inwild-samsunguk/playlist.m3u8
+#EXTINF:30,Look Thoong TV (720p) [Not 24/7]
+https://livefta.malimarcdn.com/ftaedge00/lookthoongtv.sdp/playlist.m3u8
+#EXTINF:30,LS TV (480p)
+https://livefta.malimarcdn.com/ftaedge00/laostv.sdp/playlist.m3u8
+#EXTINF:30,NAT TV (1080p)
+https://livefta.malimarcdn.com/ftaedge00/nat.sdp/playlist.m3u8
+#EXTINF:24,Peace TV English (1080p)
+https://dzkyvlfyge.erbvr.com/PeaceTvEnglish/index.m3u8
+#EXTINF:0,Superyacht TV (1080p)
+https://sy.wns.live/hls/stream.m3u8
+#EXTINF:-1 group-title="Lifestyle",TLC
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+http://103.253.74.210:7070/stream/108/index.m3u8
+#EXTINF:29,True4U (576p)
+https://live-us1.thaimomo.com/live-as/chTrue4u-2/playlist.m3u8
 
 #################### INDONESIA ####################
 
@@ -84,9 +228,6 @@ https://hgmtv.com:2020/hls/asthalive/asthalive.m3u8
 #EXTVLCOPT:http-referrer=https://abtelevisi.com/
 #EXTVLCOPT:network-caching=1000
 https://5bf7b725107e5.streamlock.net/abtv/abtv/playlist.m3u8
-#EXTINF:86,AXN HD
-#EXTVLCOPT:network-caching=1000
-http://202.150.165.66:8088/play/301-AXN/index.m3u8
 #EXTINF:30,Balikpapan TV (720p)
 #EXTVLCOPT:network-caching=1000
 http://122.248.43.242:1935/BALIKPAPANTV/_definst_/myStream/playlist.m3u8
@@ -99,32 +240,26 @@ https://banjartv.siar.us/banjartv/live/playlist.m3u8
 #EXTINF:28,Banten TV (720p) [Not 24/7]
 #EXTVLCOPT:network-caching=1000
 https://5bf7b725107e5.streamlock.net/bantentv/bantentv/playlist.m3u8
-#EXTINF:29,BMS TV (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,BMS TV (720p) [Not 24/7]
 https://5bf7b725107e5.streamlock.net/bmstv/bmstv/playlist.m3u8
-#EXTINF:29,BRTV (Indonesia) (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,BRTV (Indonesia) (720p)
 https://5bf7b725107e5.streamlock.net/brtv/brtv/playlist.m3u8
 #EXTINF:30,Bungo TV (480p) [Not 24/7]
 #EXTVLCOPT:network-caching=1000
 https://5bf7b725107e5.streamlock.net/bungotv/bungotv/playlist.m3u8
 #EXTINF:25,Caruban TV (1080p)
 #EXTVLCOPT:http-referrer=https://stream.carubantv.id
-#EXTVLCOPT:network-caching=1000
 https://stream.carubantv.id/hls/0/stream.m3u8
 #EXTINF:-1 group-title="Business",CNBC Indonesia
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
-#EXTVLCOPT:network-caching=1000
 https://video.detik.com/livecnbc/smil:cnbctv/chunklist_w1279679883_b384000_sleng.m3u8
 #EXTINF:-1 group-title="News",CNN Indonesia
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
-#EXTVLCOPT:network-caching=1000
 https://video.detik.com/livecnn/smil:cnntv/chunklist_w268557525_b384000_sleng.m3u8
 #EXTINF:5,DAAI TV
 #EXTVLCOPT:network-caching=1000
 https://pull.daaiplus.com/live-DAAIPLUS/live-DAAIPLUS_HD.m3u8
 #EXTINF:28,Dens Food Channel [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://op-flashcon-digdayahd-1.dens.tv/h/h221/02.m3u8
 #EXTINF:99,Dhamma TV (720p) [Not 24/7]
 #EXTVLCOPT:network-caching=1000
@@ -133,174 +268,136 @@ https://b.webcache.maxindo.net.id/dhamma/dhamma.m3u8
 #EXTVLCOPT:network-caching=1000
 https://dhohotv.siar.us/dhohotv/live/playlist.m3u8
 #EXTINF:18,DMI TV (576i)
-#EXTVLCOPT:network-caching=1000
 https://tvstreamcast.com/tawaftv.m3u8
 #EXTINF:10,Duta TV (360p) [Not 24/7]
 #EXTVLCOPT:network-caching=1000
 https://dutatv.siar.us/dutatv/live/playlist.m3u8
 #EXTINF:79,Efarina TV (720p)
 #EXTVLCOPT:http-referrer=https://live.efarinatv.net/
-#EXTVLCOPT:network-caching=1000
 https://live.efarinatv.com/hls/bgtaufikganteng.m3u8
-#EXTINF:48,Ficom Channel (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:47,Ficom Channel (720p)
 https://v3.siar.us/ficomchannel/live/playlist.m3u8
 #EXTINF:24,Garuda TV (1080p)
-#EXTVLCOPT:network-caching=1000
 https://hgmtv.com:19360/garudatvlivestreaming/garudatvlivestreaming.m3u8
+#EXTINF:48,I Am Channel (576p)
+#EXTVLCOPT:http-referrer=https://iamchannel.org/
+https://61146e7ab7a66.streamlock.net:8089/tes/1/chunklist.m3u8
 #EXTINF:17,Indonesiana.TV (720p)
 #EXTVLCOPT:http-referrer=https://indonesiana.tv/
-#EXTVLCOPT:network-caching=1000
 https://tvstreamcast.com/indonesiana.m3u8
 #EXTINF:24,Jambi TV
-#EXTVLCOPT:network-caching=1000
 https://jambitv.globaldigitalcore.com/hls/sah5tu7Eiveepohyieyie3OoteL2anga.m3u8
-#EXTINF:28,Jawa Pos TV Jakarta (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:31,Jawa Pos TV Jakarta (720p)
 http://122.248.43.242:1935/JAWAPOSTVJKT/_definst_/myStream/playlist.m3u8
 #EXTINF:30,Jek TV (720p) [Not 24/7]
 #EXTVLCOPT:http-referrer=http://jektv.co.id/livestreaming/
-#EXTVLCOPT:network-caching=1000
 http://27.124.81.245:1935/jektv/myStream/playlist.m3u8
 #EXTINF:30,Jogja Istimewa TV (720p)
-#EXTVLCOPT:network-caching=1000
 http://103.255.15.222:1935/tv/jitv_720p/playlist.m3u8
-#EXTINF:28,JTV (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:31,JTV (720p)
 http://122.248.43.242:1935/JTVSURABAYA/_definst_/myStream/playlist.m3u8
-#EXTINF:28,JTV Kediri (1080p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,JTV Kediri (1080p) [Not 24/7]
 http://122.248.43.242:1935/JTVKEDIRI/_definst_/myStream/playlist.m3u8
-#EXTINF:29,JTV Madiun (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,JTV Madiun (720p)
 http://122.248.43.242:1935/JTVMADIUN/_definst_/myStream/playlist.m3u8
-#EXTINF:29,JTV Malang (480p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:31,JTV Malang (480p)
 http://122.248.43.242:1935/JTVMALANG/_definst_/myStream/playlist.m3u8
+#EXTINF:26,Kaloopy TV (1080p)
+https://streamingserver000.viewtv.cloud/VIEWTVNETWORK-KALOOPY/index.m3u8
 #EXTINF:30,Kawanua TV (720p)
-#EXTVLCOPT:network-caching=1000
 http://122.248.43.242:1935/KAWANUATV/_definst_/myStream/playlist.m3u8
-#EXTINF:36,Kids TV
-#EXTVLCOPT:network-caching=1000
-http://origin5.mediacdn.ru/live/kidstv/index.m3u8
-#EXTINF:28,Kilisuci TV
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,Kilisuci TV
 https://5bf7b725107e5.streamlock.net/kstv/kstv/playlist.m3u8
 #EXTINF:40,Lingkar TV
 #EXTVLCOPT:network-caching=1000
 https://lingkartv.my.id/hls/lingkartv.m3u8
-#EXTINF:72,Madani TV (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:43,Madani TV (720p)
 https://stream.asianastream.com/madani/madanitv.smil/playlist.m3u8
 #EXTINF:10,Madu TV (1080p) [Not 24/7]
 #EXTVLCOPT:http-referrer=https://madu.tv/live-streaming/
-#EXTVLCOPT:network-caching=1000
 https://re1.siar.us/madutv/hd720/playlist.m3u8
 #EXTINF:20,Magna Channel (1080p)
 #EXTVLCOPT:network-caching=1000
 http://202.150.172.59/MagnaChannel/index.m3u8
 #EXTINF:30,Metro TV (Indonesia)
-#EXTVLCOPT:network-caching=1000
 https://edge.medcom.id/live-edge/smil:metro.smil/playlist.m3u8
 #EXTINF:10,MGSTV (360p) [Not 24/7]
 #EXTVLCOPT:http-referrer=https://mgstv.co.id/live-streaming/
 #EXTVLCOPT:network-caching=1000
 https://mgstv.siar.us/live/mgstv.m3u8
 #EXTINF:30,MQTV (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://5bf7b725107e5.streamlock.net/mqtv/mqtv/playlist.m3u8
 #EXTINF:29,Music Information Channel (720p)
 #EXTVLCOPT:http-referrer=https://mic-indo.com/live
 #EXTVLCOPT:network-caching=1000
 https://mic.siar.us/mic/live/mic.m3u8
 #EXTINF:0,Nabawi TV (720p)
-#EXTVLCOPT:network-caching=1000
 http://202.150.161.117:8000/play/NabawiTV
 #EXTINF:10,Nusantara TV (1080p)
-#EXTVLCOPT:network-caching=1000
 https://nusantaratv.siar.us/nusantaratv/live/playlist.m3u8
 #EXTINF:30,Padang TV (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 http://122.248.43.242:1935/PADANGTV/_definst_/myStream/playlist.m3u8
 #EXTINF:24,PKTV (480p)
 #EXTVLCOPT:http-referrer=https://pktvkaltim.com/acara/live-content/?noamp=mobile
-#EXTVLCOPT:network-caching=1000
 https://streaming.id18.tunnel.my.id/hls/stream.m3u8
 #EXTINF:29,PONTV (720p)
-#EXTVLCOPT:network-caching=1000
 http://122.248.43.242:1935/PONTV/_definst_/myStream/playlist.m3u8
+#EXTINF:41,Puja TV Aceh (1080p) [Not 24/7]
+#EXTVLCOPT:http-referrer=https://www.pujatvaceh.com/
+https://pujatv.siar.us/live/pujatv.m3u8
 #EXTINF:60,Radar Lampung TV (480p)
 #EXTVLCOPT:http-referrer=https://radartvnews.com/live-streaming/
 #EXTVLCOPT:network-caching=1000
 https://www.streaming.radartv.co.id/hls/test.m3u8
 #EXTINF:10,Radar Tasikmalaya TV (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://v2.siar.us/radartasikmalaya/live/playlist.m3u8
-#EXTINF:10,RCTV (Indonesia) (720p) [Not 24/7]
+#EXTINF:11,RCTV (Indonesia) (720p) [Not 24/7]
 #EXTVLCOPT:http-referrer=https://www.radarcirebon.tv/livestreaming/
-#EXTVLCOPT:network-caching=1000
 https://v10.siar.us/rctv/live/playlist.m3u8
-#EXTINF:29,Riau TV (1080p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
+#EXTINF:30,Riau TV (1080p) [Not 24/7]
 http://122.248.43.242:1935/RIAUTV/_definst_/myStream/playlist.m3u8
 #EXTINF:24,Rinjani TV
-#EXTVLCOPT:network-caching=1000
 https://rinjanitv.cloud/hls/tvkabel.m3u8
-#EXTINF:10,Rodja TV (720p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:12,Rodja TV (720p)
 https://rodjatv.com/rodjatv/live.m3u8
-#EXTINF:29,Salam TV (720p)
+#EXTINF:30,Salam TV (720p)
 #EXTVLCOPT:http-referrer=salamtelevisi.com
-#EXTVLCOPT:network-caching=1000
 https://live.salamtelevisi.com/hls/0/stream.m3u8
 #EXTINF:79,Salira TV (720p)
-#EXTVLCOPT:network-caching=1000
 https://live.salira.tv/p/3870/hybrid/play.m3u8
 #EXTINF:80,Sangaji TV (720p)
 #EXTVLCOPT:http-referrer=https://sangajitv.co.id/
-#EXTVLCOPT:network-caching=1000
 https://cdn.adyadigitalteknologi.com:8090/vod/relay.m3u8
 #EXTINF:10,SMTV (720p)
 #EXTVLCOPT:http-referrer=https://smtv.digital/
-#EXTVLCOPT:network-caching=1000
 https://e.siar.us/live/smtv.m3u8
 #EXTINF:30,Stara TV (720p)
 #EXTVLCOPT:http-referrer=https://stream.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://stream.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,Stara TV Bandung (1080p)
 #EXTVLCOPT:http-referrer=https://bandung.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://bandung.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,Stara TV Bojonegoro (720p)
 #EXTVLCOPT:http-referrer=https://bojonegoro.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://bojonegoro.staratv.id/hls/stream.m3u8
 #EXTINF:30,Stara TV Cianjur (720p)
 #EXTVLCOPT:http-referrer=https://cianjur.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://cianjur.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,Stara TV Jakarta (1080p)
 #EXTVLCOPT:http-referrer=https://jakarta.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://jakarta.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,Stara TV Malang (1080p)
 #EXTVLCOPT:http-referrer=https://malang.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://malang.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,Stara TV Parahyangan (720p)
 #EXTVLCOPT:http-referrer=https://parahyangan.staratv.id/
-#EXTVLCOPT:network-caching=1000
 https://parahyangan.staratv.id/hls/0/stream.m3u8
 #EXTINF:30,STV (Indonesia) (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 http://122.248.43.242:1935/SAMARINDATV/_definst_/myStream/playlist.m3u8
-#EXTINF:28,Suara Surabaya Visual (720p)
+#EXTINF:30,Suara Surabaya Visual (720p)
 #EXTVLCOPT:http-referrer=https://www.suarasurabaya.net/
-#EXTVLCOPT:network-caching=1000
 https://ssfm.siar.us/ssfm/live/playlist.m3u8
 #EXTINF:25,TATV (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://v2.siar.us/tatv/live.sdp/playlist.m3u8
 #EXTINF:80,The Indonesia Channel (1080p)
 #EXTVLCOPT:network-caching=1000
@@ -312,207 +409,83 @@ https://5bf7b725107e5.streamlock.net/tv9/tv9/playlist.m3u8
 #EXTVLCOPT:network-caching=1000
 https://5bf7b725107e5.streamlock.net/tvtabalong/tvtabalong/playlist.m3u8
 #EXTINF:70,TVRI Aceh (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Aceh/hls/Aceh.m3u8
 #EXTINF:70,TVRI Bali (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Bali/hls/Bali.m3u8
 #EXTINF:70,TVRI Bangka Belitung (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Babel/hls/Babel.m3u8
 #EXTINF:70,TVRI Bengkulu (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Bengkulu/hls/Bengkulu.m3u8
 #EXTINF:70,TVRI Central Java (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Jateng/hls/Jateng.m3u8
 #EXTINF:70,TVRI Central Kalimantan (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Kalteng/hls/Kalteng.m3u8
 #EXTINF:70,TVRI Central Sulawesi (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sulteng/hls/Sulteng.m3u8
 #EXTINF:70,TVRI East Java (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Jatim/hls/Jatim.m3u8
 #EXTINF:70,TVRI East Kalimantan (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Kaltim/hls/Kaltim.m3u8
 #EXTINF:70,TVRI East Nusa Tenggara (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/NTT/hls/NTT.m3u8
 #EXTINF:70,TVRI Gorontalo (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Gorontalo/hls/Gorontalo.m3u8
 #EXTINF:24,TVRI HD (1080p)
-#EXTVLCOPT:network-caching=1000
 http://202.150.172.59/TVRI/index.m3u8
 #EXTINF:70,TVRI Jakarta (576i) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/DKI/hls/DKI.m3u8
 #EXTINF:70,TVRI Jambi (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Jambi/hls/Jambi.m3u8
 #EXTINF:70,TVRI Lampung (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Lampung/hls/Lampung.m3u8
 #EXTINF:70,TVRI Maluku (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Ambon/hls/Ambon.m3u8
 #EXTINF:70,TVRI North Sulawesi (1080p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sulut/hls/Sulut.m3u8
 #EXTINF:70,TVRI North Sumatra (1080p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sumut/hls/Sumut.m3u8
 #EXTINF:70,TVRI Papua (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Papua/hls/Papua.m3u8
 #EXTINF:70,TVRI Riau (720p) [Not 24/7]
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Riau/hls/Riau.m3u8
 #EXTINF:70,TVRI South Kalimantan (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Kalsel/hls/Kalsel.m3u8
 #EXTINF:70,TVRI South Sulawesi (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sulsel/hls/Sulsel.m3u8
 #EXTINF:70,TVRI South Sumatra (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sumsel/hls/Sumsel.m3u8
-#EXTINF:60,TVRI Southeast Sulawesi (480p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:70,TVRI Southeast Sulawesi (480p)
 https://ott-balancer.tvri.go.id/live/eds/Sultra/hls/Sultra.m3u8
 #EXTINF:70,TVRI West Java (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Jabar/hls/Jabar.m3u8
 #EXTINF:70,TVRI West Kalimantan (480p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Kalbar/hls/Kalbar.m3u8
 #EXTINF:70,TVRI West Nusa Tenggara (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/NTB/hls/NTB.m3u8
 #EXTINF:70,TVRI West Papua (1080p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Pabar/hls/Pabar.m3u8
 #EXTINF:70,TVRI West Sulawesi (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sulbar/hls/Sulbar.m3u8
 #EXTINF:70,TVRI West Sumatra (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Sumbar/hls/Sumbar.m3u8
-#EXTINF:70,TVRI World (1080p)
-#EXTVLCOPT:network-caching=1000
+#EXTINF:70 tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freewatch/logos/intl/TVRIWorld.png" tvg-chno="602",TVRI World (1080p)
 https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/TVRIWorld.m3u8
 #EXTINF:70,TVRI Yogyakarta (720p)
-#EXTVLCOPT:network-caching=1000
 https://ott-balancer.tvri.go.id/live/eds/Jogjakarta/hls/Jogjakarta.m3u8
-#EXTINF:78,U Channel
+#EXTINF:70,U Channel
 #EXTVLCOPT:http-referrer=https://www.u-channel.tv
-#EXTVLCOPT:network-caching=1000
 https://srs.u-channel.tv/live/uchannel-tv.m3u8
 #EXTINF:85,UGTV (720p)
 #EXTVLCOPT:network-caching=1000
 https://cdn.gunadarma.ac.id/streams/ugtv/ingestugtv.m3u8
 #EXTINF:80,USM TV (1080p)
 #EXTVLCOPT:http-referrer=https://usmtv.id/live-tv/
-#EXTVLCOPT:network-caching=1000
 https://play.fsa-stream.my.id/hls/siaran.m3u8
-#EXTINF:22,VTVHD
-#EXTVLCOPT:network-caching=1000
+#EXTINF:20,VTVHD
 http://202.150.172.59/VTVHD/index.m3u8
-
 
 #################### RADIO ####################
 
-#EXTINF:-1 tvg-chno="901" tvg-id="Nasional FM" tvg-name="Nasional FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-NasionalFM.png",RTM Radio Nasional
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FMAAC
-#EXTINF:-1 tvg-chno="902" tvg-id="Traxx FM" tvg-name="Traxx FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-TraxxFM.png",RTM Radio Traxx
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC
-#EXTINF:-1 tvg-chno="903" tvg-id="AI FM" tvg-name="AI FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AiFM.png",RTM Radio Ai
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC
-#EXTINF:-1 tvg-chno="904" tvg-id="Minnal FM" tvg-name="Minnal FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-MinnalFM.png",RTM Radio Minnal
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC
-#EXTINF:-1 tvg-chno="905" tvg-id="Radio Klasik" tvg-name="Radio Klasik" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-RadioKlasik.png",RTM Radio Klasik
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC
-#EXTINF:-1 tvg-chno="906" tvg-id="Asyik FM" tvg-name="Asyik FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AsyikFM.png",RTM Radio Asyik / RTM Radio Salam
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FMAAC
-#EXTINF:-1 tvg-chno="907" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-hotfm.png",Hot FM (Media Prima Audio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/drakdf8mtd3vv
-#EXTINF:-1 tvg-chno="908" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-flyfm.png",Fly FM (Media Prima Audio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/q17aka9mtd3vv
-#EXTINF:-1 tvg-chno="909" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-eightfm.png",Eight FM (Media Prima Audio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/qp0xrd9mtd3vv
-#EXTINF:-1 tvg-chno="910" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-molekfm.png",Molek FM (Media Prima Audio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/z56xa78mtd3vv
-#EXTINF:-1 tvg-chno="911" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-kool101-dark.png",Kool 101 (Media Prima Audio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/3930238mtd3vv
-#EXTINF:-1 tvg-chno="912" tvg-id="HITZ" tvg-name="HITZ" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/hitz.png",Hitz (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/488kt4sbv4uvv
-#EXTINF:-1 tvg-chno="913" tvg-id="LITE" tvg-name="LITE" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/lite.png",Lite (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/bn4ex8sbv4uvv
-#EXTINF:-1 tvg-chno="914" tvg-id="MIX" tvg-name="MIX" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/mix.png",Mix (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/v5pq3htbv4uvv
-#EXTINF:-1 tvg-chno="915" tvg-id="ERA" tvg-name="ERA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/era.png",Era (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/crec9cmbv4uvv
-#EXTINF:-1 tvg-chno="916" tvg-id="SINAR" tvg-name="SINAR" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/sinar.png",Sinar (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/azatk0tbv4uvv
-#EXTINF:-1 tvg-chno="917" tvg-id="ZAYAN" tvg-name="ZAYAN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/zayan.png",Zayan (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/7ww2a4tbv4uvv
-#EXTINF:-1 tvg-chno="918" tvg-id="GEGAR" tvg-name="GEGAR" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/gegar.png",Gegar (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/cn0zcqsbv4uvv
-#EXTINF:-1 tvg-chno="919" tvg-id="RAAGA" tvg-name="RAAGA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/raaga.png",Raaga (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/1ut6qwtbv4uvv
-#EXTINF:-1 tvg-chno="920" tvg-id="MY" tvg-name="MY" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/my.png",MY (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/hc3unrtbv4uvv
-#EXTINF:-1 tvg-chno="921" tvg-id="MELODY" tvg-name="MELODY" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/melody.png",Melody (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/2u1n6dtbv4uvv
-#EXTINF:-1 tvg-chno="922" tvg-id="GOXUAN" tvg-name="GOXUAN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/goxuan.png",goXuan (Astro Radio)
-#EXTGRP:Radio
-#EXTVLCOPT:network-caching=1000
-https://stream.rcs.revma.com/xt9nhzsbv4uvv
 #EXTINF:-1 tvg-chno="923" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/988fm.png",988 FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
@@ -525,11 +498,101 @@ https://stream.rcs.revma.com/h34x4kgg9hhvv
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
 https://playerservices.streamtheworld.com/api/livestream-redirect/BFMAAC
+#EXTINF:36,DG:Radio (1080p)
+https://mdn.dg.church/683c0cb036885-1/index.m3u8
+#EXTINF:-1 tvg-chno="909" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-eightfm.png",Eight FM (Media Prima Audio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/qp0xrd9mtd3vv
+#EXTINF:-1 tvg-chno="915" tvg-id="ERA" tvg-name="ERA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/era.png",Era (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/crec9cmbv4uvv
+#EXTINF:-1 tvg-chno="908" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-flyfm.png",Fly FM (Media Prima Audio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/q17aka9mtd3vv
+#EXTINF:-1 tvg-chno="918" tvg-id="GEGAR" tvg-name="GEGAR" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/gegar.png",Gegar (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/cn0zcqsbv4uvv
+#EXTINF:-1 tvg-chno="922" tvg-id="GOXUAN" tvg-name="GOXUAN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/goxuan.png",goXuan (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/xt9nhzsbv4uvv
+#EXTINF:-1 tvg-chno="912" tvg-id="HITZ" tvg-name="HITZ" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/hitz.png",Hitz (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/488kt4sbv4uvv
+#EXTINF:-1 tvg-chno="907" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-hotfm.png",Hot FM (Media Prima Audio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/drakdf8mtd3vv
+#EXTINF:-1 tvg-chno="911" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-kool101-dark.png",Kool 101 (Media Prima Audio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/3930238mtd3vv
+#EXTINF:-1 tvg-chno="913" tvg-id="LITE" tvg-name="LITE" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/lite.png",Lite (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/bn4ex8sbv4uvv
 #EXTINF:-1 tvg-chno="926" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/ManisFM.png",Manis FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
 https://stream.rcs.revma.com/nzgauqq1v7zuv
+#EXTINF:-1 tvg-chno="921" tvg-id="MELODY" tvg-name="MELODY" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/melody.png",Melody (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/2u1n6dtbv4uvv
+#EXTINF:-1 tvg-chno="914" tvg-id="MIX" tvg-name="MIX" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/mix.png",Mix (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/v5pq3htbv4uvv
+#EXTINF:-1 tvg-chno="910" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/MPA/mpa-molekfm.png",Molek FM (Media Prima Audio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/z56xa78mtd3vv
+#EXTINF:-1 tvg-chno="920" tvg-id="MY" tvg-name="MY" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/my.png",MY (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/hc3unrtbv4uvv
+#EXTINF:-1 tvg-chno="919" tvg-id="RAAGA" tvg-name="RAAGA" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/raaga.png",Raaga (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/1ut6qwtbv4uvv
+#EXTINF:-1 tvg-chno="903" tvg-id="AI FM" tvg-name="AI FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AiFM.png",RTM Radio Ai
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC
+#EXTINF:-1 tvg-chno="906" tvg-id="Asyik FM" tvg-name="Asyik FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-AsyikFM.png",RTM Radio Asyik / RTM Radio Salam
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FMAAC
+#EXTINF:-1 tvg-chno="905" tvg-id="Radio Klasik" tvg-name="Radio Klasik" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-RadioKlasik.png",RTM Radio Klasik
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC
+#EXTINF:-1 tvg-chno="904" tvg-id="Minnal FM" tvg-name="Minnal FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-MinnalFM.png",RTM Radio Minnal
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC
+#EXTINF:-1 tvg-chno="901" tvg-id="Nasional FM" tvg-name="Nasional FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-NasionalFM.png",RTM Radio Nasional
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FMAAC
+#EXTINF:-1 tvg-chno="902" tvg-id="Traxx FM" tvg-name="Traxx FM" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/RTM/RTM-TraxxFM.png",RTM Radio Traxx
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC
+#EXTINF:-1 tvg-chno="916" tvg-id="SINAR" tvg-name="SINAR" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/sinar.png",Sinar (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/azatk0tbv4uvv
 #EXTINF:-1 tvg-chno="927" tvg-id="" tvg-name="" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/suriafm.png",Suria FM
 #EXTGRP:Radio
 #EXTVLCOPT:network-caching=1000
 https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC
+#EXTINF:-1 tvg-chno="917" tvg-id="ZAYAN" tvg-name="ZAYAN" tvg-logo="https://raw.githubusercontent.com/FreemediaMY/FreemediaMY/main/assets/freelisten/logos/local/AstroRadio/zayan.png",Zayan (Astro Radio)
+#EXTGRP:Radio
+#EXTVLCOPT:network-caching=1000
+https://stream.rcs.revma.com/7ww2a4tbv4uvv
