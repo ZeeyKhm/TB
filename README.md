@@ -10,6 +10,19 @@ Built with Kotlin, Jetpack Compose and AndroidX Media3 (ExoPlayer). The playlist
 is fetched from a raw GitHub URL on every launch, so updating the channel list
 is just a GitHub commit — no app update required.
 
+## Download
+
+Installable builds are attached to the
+[v1.1.0 release](https://github.com/ZeeyKhm/TB/releases/latest) and also
+committed in [`dist/`](dist):
+
+- `TB-release.apk` — signed release build, minified and non-debuggable (recommended).
+- `TB-debug.apk` — debug build for testing.
+
+Both are version 1.1.0 (versionCode 2) but use different signing keys, so
+uninstall any previous TB install before switching between them.
+
+
 | Playing | Channel list |
 | --- | --- |
 | ![Player](docs/screenshots/player.png) | ![Channels](docs/screenshots/channels.png) |
