@@ -207,6 +207,12 @@ package is `dist/TB.wgt`.
    TVs reject package IDs that are not exactly 10 characters, so keep it at
    10 if you rename the app.
 
+   If `sdb connect` says it cannot reach the TV, the TV is either in standby
+   (the debug port only listens while it is switched on) or it picked a new
+   DHCP address. Check the TV's current IP under Settings → Connection →
+   Network → IP Settings, and set that address as the Host PC IP in the TV's
+   developer mode.
+
    Alternatively open **Tizen Studio → Device Manager → right-click the TV →
    Install app**, and pick `dist/TB.wgt`.
 
