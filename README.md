@@ -183,8 +183,9 @@ file manager). On Android TV the app appears in the leanback launcher as **TB**.
 ### Samsung Tizen TV (`.wgt`)
 
 Samsung TVs cannot install APKs, so `tizen/` is a separate web app with the same
-playlist, TV/Radio tabs and hidden-channel PIN. The signed package is
-`dist/TB.wgt`.
+playlist and hidden-channel PIN. It shows a single channel list (TV and radio
+together, in playlist order) because the TV remote has no tab keys. The signed
+package is `dist/TB.wgt`.
 
 1. On the TV, open **Apps**, then enter **Developer mode** (Apps → press `12345`
    on the remote → Developer mode ON → enter your PC's IP → reboot the TV).
@@ -210,8 +211,11 @@ playlist, TV/Radio tabs and hidden-channel PIN. The signed package is
    Install app**, and pick `dist/TB.wgt`.
 
 Remote controls match the Android app: **OK** plays the focused channel,
-**◀ ▶** zaps, **▲ ▼** moves the list, **INFO** three times opens the PIN prompt
-(hidden playlists, PIN `1234`).
+**◀ ▶** zaps, **▲ ▼** moves the list, **BACK** hides/shows the channel list.
+The on-screen **i** button at the top of the list opens the hidden-playlist PIN
+prompt (PIN `1234`); walk up to it with **▲** from the first channel, or click it
+with a pointer. Three presses of **INFO** do the same on remotes that have the
+key.
 
 Re-package after editing `tizen/`:
 
@@ -248,8 +252,14 @@ token, and this app intentionally does not embed credentials.
   resolved before playback. If a channel still fails, the app shows the URL, the
   AVPlay state and the player's error instead of a generic message.
 - `#TB-IFRAME:<url>` makes the Tizen app play that channel inside the
-  broadcaster's own web player. It is used for RTB, whose CDN only serves
-  requests that carry the `rtbgo.bn` referrer, which a TV app cannot set.
+  broadcaster's own web player. It is used for RTB Sukmaindera and RTB Aneka,
+  whose CDN only serves requests that carry the `rtbgo.bn` referrer, which a TV
+  app cannot set. The app frames `rtbgo.bn/live/<CHANNEL>`, hides the channel
+  list, and scales the frame so only the broadcaster's video area is visible
+  (the surrounding website is cropped out). **BACK** brings the list back.
+- If the built-in player starts a stream with sound but no picture (as the
+  Malaysian RTM channels do), the Tizen app reopens it in AVPlay, and then in
+  hls.js (software decode) when AVPlay reports an audio-only stream too.
 - Referer-locked channels without a `#TB-IFRAME:` page can only play in the
   broadcaster's own app; the Tizen app says so instead of failing silently.
 - Widevine (`com.widevine.alpha`) and ClearKey (`org.w3.clearkey`) DRM are read

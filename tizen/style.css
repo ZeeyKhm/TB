@@ -31,15 +31,22 @@ html, body {
   object-fit: contain;
 }
 
+/* RTBGo's own page is the only way to play the RTB channels (their CDN
+   requires the rtbgo.bn referrer), so frame it and crop the website chrome
+   away: at 1920x1080 the RTBGo player sits at 15,168 in a 1399x787 box, so
+   scale that box up until it fills the screen. */
 #playerFrame {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
   border: 0;
   background: #000;
   z-index: 1;
   display: none;
+  transform-origin: 0 0;
+  transform: scale(1.3725) translate(-15px, -168px);
 }
 
 /* ---------------------------------------------------------------- splash */
@@ -85,7 +92,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 26px 26px 12px;
+  padding: 26px 26px 18px;
 }
 .brand {
   font-size: 34px;
@@ -93,30 +100,32 @@ html, body {
   letter-spacing: .06em;
   color: var(--accent);
 }
+.meta { flex: 1; min-width: 0; }
 .count { font-size: 20px; font-weight: 700; }
 .source { font-size: 14px; color: var(--muted); margin-top: 2px; }
 
-.tabs {
-  display: flex;
-  gap: 10px;
-  padding: 10px 22px 14px;
-}
-.tab {
-  flex: 1;
-  padding: 12px 10px;
+.info-btn {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  padding: 0;
   border: 0;
-  border-radius: 12px;
+  border-radius: 50%;
   background: var(--surface);
   color: var(--muted);
-  font-size: 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-style: italic;
   font-weight: 700;
-  font-family: inherit;
+  line-height: 52px;
+  text-align: center;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .12);
+  transition: background .12s ease, box-shadow .12s ease, color .12s ease;
 }
-.tab span { opacity: .6; font-weight: 500; margin-left: 6px; font-size: 15px; }
-.tab.active {
-  background: rgba(255, 77, 94, .16);
+.info-btn.focused {
+  background: rgba(255, 77, 94, .22);
   color: var(--text);
-  box-shadow: inset 0 0 0 2px var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent), 0 0 16px rgba(255, 77, 94, .45);
 }
 
 /* ---------------------------------------------------------------- list */

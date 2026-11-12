@@ -20,10 +20,7 @@
   var listEl = document.getElementById('list');
   var countEl = document.getElementById('count');
   var sourceEl = document.getElementById('source');
-  var tvCountEl = document.getElementById('tvCount');
-  var radioCountEl = document.getElementById('radioCount');
-  var tabTv = document.getElementById('tabTv');
-  var tabRadio = document.getElementById('tabRadio');
+  var infoBtn = document.getElementById('infoBtn');
   var toastEl = document.getElementById('toast');
   var pinEl = document.getElementById('pin');
   var pinDots = document.getElementById('pinDots');
@@ -33,17 +30,17 @@
   var mainChannels = [];
   var hiddenChannels = [];
   var hiddenMode = false;
-  var tab = 'tv';
   var focusTv = 0;
-  var focusRadio = 0;
   var current = null;
   var panelOpen = true;
+  var infoFocused = false;
   var bootFailed = false;
   var hls = null;
   var triedHls = false;
   var avplayTried = false;
   var playSeq = 0;
   var frameMode = false;
+  var videoWatch = null;
   var toastTimer = null;
 
   var infoClicks = 0;
@@ -69,13 +66,11 @@
 
   function channels() { return hiddenMode ? hiddenChannels : mainChannels; }
 
-  function filtered() {
-    var wantRadio = tab === 'radio';
-    return channels().filter(function (c) { return c.radio === wantRadio; });
-  }
+  /* One list only: TV and radio channels together, in playlist order. */
+  function filtered() { return channels(); }
 
-  function focusIndex() { return tab === 'radio' ? focusRadio : focusTv; }
-  function setFocusIndex(i) { if (tab === 'radio') focusRadio = i; else focusTv = i; }
+  function focusIndex() { return focusTv; }
+  function setFocusIndex(i) { focusTv = i; }
 
   function counts() {
     var tv = 0, radio = 0;
@@ -187,11 +182,8 @@
   function render() {
     var counts_ = counts();
     countEl.textContent = counts_.tv + ' TV · ' + counts_.radio + ' radio';
-    tvCountEl.textContent = counts_.tv;
-    radioCountEl.textContent = counts_.radio;
     sourceEl.textContent = hiddenMode ? 'hidden playlists' : 'main playlist';
-    tabTv.className = 'tab' + (tab === 'tv' ? ' active' : '');
-    tabRadio.className = 'tab' + (tab === 'radio' ? ' active' : '');
+    infoBtn.className = 'info-btn' + (infoFocused ? ' focused' : '');
 
     var items = filtered();
     var focus = focusIndex();
@@ -205,7 +197,7 @@
         html += '<div class="section">' + escapeHtml(c.section) + '</div>';
         lastSection = c.section;
       }
-      html += '<div class="row' + (i === focus ? ' focused' : '') +
+      html += '<div class="row' + (i === focus && !infoFocused ? ' focused' : '') +
         (current && current.url === c.url ? ' playing' : '') +
         '" data-i="' + i + '"><span class="dot"></span><span class="name">' +
         escapeHtml(c.name) + '</span></div>';
@@ -224,17 +216,19 @@
   }
 
   function updateFocus() {
+    infoBtn.className = 'info-btn' + (infoFocused ? ' focused' : '');
     var rows = listEl.querySelectorAll('.row');
     var focus = focusIndex();
+    var items = filtered();
     for (var i = 0; i < rows.length; i++) {
       var row = rows[i];
       var idx = parseInt(row.getAttribute('data-i'), 10);
-      var channel = filtered()[idx];
+      var channel = items[idx];
       row.className = 'row' +
-        (idx === focus ? ' focused' : '') +
+        (idx === focus && !infoFocused ? ' focused' : '') +
         (current && channel && current.url === channel.url ? ' playing' : '');
     }
-    scrollToFocus(true);
+    if (!infoFocused) scrollToFocus(true);
   }
 
   function scrollToFocus(smooth) {
@@ -250,8 +244,12 @@
   function moveFocus(delta) {
     var items = filtered();
     if (!items.length) return;
+    if (infoFocused) {
+      if (delta > 0) { infoFocused = false; updateFocus(); }
+      return;
+    }
     var next = focusIndex() + delta;
-    if (next < 0) next = 0;
+    if (next < 0) { infoFocused = true; updateFocus(); return; }
     if (next > items.length - 1) next = items.length - 1;
     setFocusIndex(next);
     updateFocus();
@@ -351,6 +349,7 @@
     if (!api) return false;
     stopAvplay();
     var token = avplayToken;
+    var seq = playSeq;
     var url = String(channel.url).split('|')[0];
 
     function alive() { return token === avplayToken; }
@@ -387,6 +386,7 @@
           api.play();
           splash.className = 'splash hidden';
           toast('Playing ' + channel.name);
+          setTimeout(function () { checkAvplayVideo(api, channel, seq, token); }, 5000);
         } catch (e) { fail(e); }
       }, fail);
       return true;
@@ -396,6 +396,28 @@
     }
   }
 
+  /* AVPlay can end up sound-only as well. It knows which tracks it opened, so
+     ask it: when there is no video track, hand the stream to hls.js (MSE),
+     which demuxes it in JavaScript and is the last playback path available. */
+  function checkAvplayVideo(api, channel, seq, token) {
+    if (token !== avplayToken || !avplayActive || seq !== playSeq) return;
+    if (channel.radio || channel.frame) return;
+    var info = null;
+    try { info = api.getCurrentStreamInfo ? api.getCurrentStreamInfo() : null; } catch (e) { info = null; }
+    if (!info || !info.length) return;          /* engine cannot tell us */
+    var hasVideo = false;
+    for (var i = 0; i < info.length; i++) {
+      var type = String((info[i] && info[i].type) || '').toUpperCase();
+      if (type === 'VIDEO') hasVideo = true;
+    }
+    if (hasVideo) return;
+    if (!window.MediaSource || !window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.4d4028,mp4a.40.2"')) return;
+    stopAvplay();
+    triedHls = true;
+    startHls(String(channel.url).split('|')[0]);
+    toast('No video track — trying the software player');
+  }
+
   function playChannel(channel) {
     if (!channel) return;
     var seq = ++playSeq;
@@ -403,6 +425,7 @@
     triedHls = false;
     avplayTried = false;
     diagOpen = false;
+    clearVideoWatch();
     splash.className = 'splash hidden';
     if (hls) { hls.destroy(); hls = null; }
     stopAvplay();
@@ -415,14 +438,17 @@
 
     /* Some broadcasters lock their CDN to their own web player (Referer
        header). Those channels point at the broadcaster's player page, which
-       runs in this iframe with the right context. */
+       runs in this iframe with the right context. The website is cropped to
+       its video area by #playerFrame, so hide the list and let it fill the
+       screen. */
     if (channel.frame && IS_TIZEN) {
       stopFrame();
       frameEl.src = channel.frame;
       frameEl.style.display = 'block';
       frameMode = true;
+      setPanel(false);
       render();
-      toast('Playing ' + channel.name);
+      toast('Playing ' + channel.name + ' · BACK for the list');
       return;
     }
     stopFrame();
@@ -443,6 +469,27 @@
     frameMode = false;
     frameEl.style.display = 'none';
     frameEl.src = 'about:blank';
+  }
+
+  /* ------------------------------------------------------------ video watch
+     Some HLS streams start audio-only in the HTML5 element (the Malaysian
+     RTM channels do). Nothing can be read from the element to force the video
+     track, so when no frame arrives shortly after "playing" hand the stream to
+     AVPlay, which demuxes it itself. */
+  function clearVideoWatch() {
+    if (videoWatch) { clearTimeout(videoWatch); videoWatch = null; }
+  }
+
+  function watchVideo(channel, seq) {
+    clearVideoWatch();
+    if (!IS_TIZEN || avplayTried || channel.radio || channel.frame) return;
+    videoWatch = setTimeout(function () {
+      videoWatch = null;
+      if (seq !== playSeq || current !== channel || avplayTried) return;
+      if (player.paused || player.videoWidth > 0) return;
+      avplayTried = true;
+      if (startAvplay(channel)) toast('No picture yet — trying the TV video engine');
+    }, 2800);
   }
 
   function zap(delta) {
@@ -477,17 +524,42 @@
 
   player.addEventListener('playing', function () {
     splash.className = 'splash hidden';
+    if (current) watchVideo(current, playSeq);
   });
 
-  /* ------------------------------------------------------------ tabs */
-  function setTab(next) {
-    if (tab === next) return;
-    tab = next;
-    render();
+  player.addEventListener('loadedmetadata', function () {
+    if (player.videoWidth > 0) clearVideoWatch();
+  });
+
+  /* ------------------------------------------------------------ panel */
+  function setPanel(open) {
+    panelOpen = open;
+    panel.className = 'panel' + (open ? '' : ' hidden');
+    setAvplayVisible(!open);
   }
 
-  tabTv.addEventListener('click', function () { setTab('tv'); });
-  tabRadio.addEventListener('click', function () { setTab('radio'); });
+  /* ------------------------------------------------------------ info button
+     The remote has no usable INFO key, so the panel header carries a
+     clickable "i": click it with a pointer, or walk up to it with the arrow
+     keys. Either way it asks for the hidden-channels PIN. */
+  infoBtn.addEventListener('click', function () {
+    infoFocused = false;
+    updateFocus();
+    openPin(hiddenMode);
+  });
+
+  /* Pointer users can also pick a channel straight from the list. */
+  listEl.addEventListener('click', function (event) {
+    var row = event.target && event.target.closest ? event.target.closest('.row') : null;
+    if (!row) return;
+    var idx = parseInt(row.getAttribute('data-i'), 10);
+    var channel = filtered()[idx];
+    if (!channel) return;
+    infoFocused = false;
+    setFocusIndex(idx);
+    playChannel(channel);
+    updateFocus();
+  });
 
   /* ------------------------------------------------------------ hidden */
   function openPin(hiding) {
@@ -504,7 +576,7 @@
   function closePin() {
     pinOpen = false;
     pinEl.className = 'overlay hidden';
-    setAvplayVisible(true);
+    setAvplayVisible(!panelOpen);
   }
 
   function updatePinDots() {
@@ -575,9 +647,9 @@
 
   function applyMode(message) {
     focusTv = 0;
-    focusRadio = 0;
-    tab = 'tv';
+    infoFocused = false;
     current = null;
+    clearVideoWatch();
     stopAvplay();
     stopFrame();
     try { player.pause(); player.removeAttribute('src'); player.load(); } catch (e) { /* ignore */ }
@@ -620,23 +692,17 @@
     switch (code) {
       case 38: moveFocus(-1); break;
       case 40: moveFocus(1); break;
-      case 37: zap(-1); break;
-      case 39: zap(1); break;
+      case 37: if (!infoFocused) zap(-1); break;
+      case 39: if (!infoFocused) zap(1); break;
       case 13:
         if (bootFailed) { boot(); return; }
-        if (!panelOpen) {
-          panelOpen = true;
-          panel.className = 'panel';
-          setAvplayVisible(true);
-          return;
-        }
+        if (infoFocused) { openPin(hiddenMode); break; }
+        if (!panelOpen) { setPanel(true); return; }
         playChannel(filtered()[focusIndex()]);
         break;
       case 10009:
       case 27:
-        panelOpen = !panelOpen;
-        panel.className = 'panel' + (panelOpen ? '' : ' hidden');
-        setAvplayVisible(!panelOpen);
+        setPanel(!panelOpen);
         break;
       case 457:
         noteInfoClick();

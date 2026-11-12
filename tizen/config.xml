@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:tizen="http://tizen.org/ns/widgets"
         id="http://tbplayer.local"
-        version="1.1.0"
+        version="1.2.0"
         viewmodes="maximized">
 
     <tizen:application id="tbplayer01.tb" package="tbplayer01" required_version="4.0"/>
